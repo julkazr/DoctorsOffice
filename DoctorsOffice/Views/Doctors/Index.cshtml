@@ -1,0 +1,76 @@
+﻿@model DoctorsOffice.ViewModels.DoctorListViewModel
+@using PagedList;
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="dark-text">Doctors</h2>
+
+<p class="dark-text text-bold">
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm("Index", "Doctors", FormMethod.Get))
+{
+    <div class="row">
+        <p class="col-lg-6 form-inline dark-text text-bold">
+            Find doctor by name:
+            @Html.TextBox("searchByName", Model.NameFilter as string, new { @class = "form-control ml-2 input-fields" })
+            <button type="submit" class="btn btn-default ml-2 dark-blue-bckg light-text">Search</button>
+        </p>
+        <p class="col-lg-6 form-inline dark-text text-bold">
+            Find doctor by position:
+            @Html.TextBox("searchByPosition", Model.PositionFilter as string, new { @class = "form-control ml-2 input-fields" })
+            <button type="submit" class="btn btn-default ml-2 dark-blue-bckg light-text">Search</button>
+        </p>
+    </div>
+}
+<table class="table table-bcg dark-text">
+    <tr>
+        <th>
+            @Html.ActionLink("Name", "Index", new { sort = Model.SortByName, searchByName = Model.NameFilter, searchByPosition = Model.PositionFilter, page = 1 })
+        </th>
+        <th>
+            Phone Number
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            @Html.ActionLink("Position", "Index", new { sort = Model.SortByPosition, searchByName = Model.NameFilter, searchByPosition = Model.PositionFilter, page = 1 })
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Doctors)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.GetFullName)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.PhoneNumber)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Email)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Position)
+    </td>
+    <td class="text-bold">
+        @Html.ActionLink("Examinations", "ExaminationList", new { doctorId = item.ID}) |
+        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+    </td>
+</tr>
+}
+
+</table>
+<br />
+
+Page  @(Model.Doctors.PageCount < Model.Doctors.PageNumber ? 0 : Model.Doctors.PageNumber) of @Model.Doctors.PageCount
+@Html.PagedListPager(Model.Doctors, page => Url.Action("Index", 
+                                        new { page, sort = Model.CurrentSort, searchByName = Model.NameFilter, searchByPosition = Model.PositionFilter }))

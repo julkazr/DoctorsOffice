@@ -1,0 +1,98 @@
+﻿@model DoctorsOffice.Data.Patient
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2 class="dark-text">Patient's details</h2>
+
+<div>
+    
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Social Security Number
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatientSocialSecurityNumber)
+        </dd>
+
+        <dt>
+            Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            Personal Doctor
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PersonalDoctor.LastName)
+        </dd>
+
+        <dt>
+            Address
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            Phone Number
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+        <dt>
+            Email
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            Date of Birth
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+
+        <dt>
+            Height
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Height)
+        </dd>
+
+        <dt>
+            Weight
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Weight)
+        </dd>
+
+        <dt>
+            Bloodtype
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BloodType)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <strong class="back-link">@Html.ActionLink("Edit", "Edit", new { id = Model.ID }) | </strong>
+    <strong class="back-link">@Html.ActionLink("Back to List", "Index")</strong>
+</p>

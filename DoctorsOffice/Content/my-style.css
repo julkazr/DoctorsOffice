@@ -1,0 +1,170 @@
+﻿/*Dark blue color with opacity: rgba(1, 20, 34, 0.4)
+  Dark blue color: #11422 (rgba(6,23,35,1))
+    Light-blue color: rgba(126,227,237,1)
+    Gray color: #9d9d9d
+  Light-text color: #e8eaf6
+*/
+
+body {
+    height: 100vh;
+    padding: 0;
+}
+
+hr {
+    background-color: #011422 !important;
+}
+
+.blue-bckg {
+    background-color: rgba(126,227,237,1) !important;
+}
+
+.dark-blue-bckg {
+    background-color: #011422!important;
+}
+
+.light-text {
+    color: #E8EAF6!important;
+}
+
+.dark-text {
+    color: #011422!important;
+}
+
+.blue-text {
+    color: rgba(126,227,237,1)!important;
+}
+
+.main-container {
+    min-height: 80vh;
+    color: #011422 !important;
+}
+
+.table-bcg {
+    background-color: #E8EAF6;
+    background-color: rgba(232,234,246,0.4);
+}
+
+dt {
+    color: #011422 !important;
+}
+
+dd {
+    color: #011422 !important;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+li > a {
+    color: #E8EAF6;
+}
+
+li > a:hover {
+    color: rgba(126,227,237,1);
+    text-decoration: none;
+}
+
+p > a {
+    color: #011422 !important;
+    
+}
+
+p > a:hover {
+    color: rgba(126,227,237,1)!important;
+    text-decoration: none;
+}
+
+td > a {
+    color: #011422 !important;
+}
+
+td > a:hover {
+    color: rgba(126,227,237,1) !important;
+    text-decoration: none;
+}
+
+th > a {
+    color: #011422 !important;
+}
+
+th > a:hover {
+    color: rgba(126,227,237,1) !important;
+    text-decoration: none;
+}
+
+.form-actions.dark-text > a {
+    color: #011422 !important;
+}
+
+.form-actions.dark-text > a:hover {
+    color: rgba(126,227,237,1) !important;
+    text-decoration: none;
+}
+
+textarea {
+    max-width: none;
+}
+
+.back-link a {
+    color: #011422 !important;
+}
+
+.back-link a:hover {
+    color: rgba(126,227,237,1) !important;
+    text-decoration: none;
+}
+
+address a {
+    color: #011422 !important;
+}
+
+address a:hover {
+    color: rgba(126,227,237,1) !important;
+    text-decoration: none;
+}
+
+h3 a {
+    color: #011422 !important;
+}
+
+h3 a:hover {
+    color: rgba(126,227,237,1) !important;
+    text-decoration: none;
+}
+
+dd >a {
+    color: #011422 !important;
+}
+
+dd > a:hover {
+    color: rgba(126,227,237,1) !important;
+    text-decoration: none;
+}
+
+.input-fields {
+    color: #011422 !important;
+    border: 1px solid #011422;
+}
+
+.input-file {
+    color: #011422 !important;
+    border: 1px solid #011422;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: rgba(126,227,237,1) !important;
+    color: #011422 !important;
+}
+
+.pagination > .active > a {
+    background-color: #011422 !important;
+    color: #E8EAF6;
+}
+
+
+
+
+
+

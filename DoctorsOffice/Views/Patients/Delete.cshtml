@@ -1,0 +1,104 @@
+﻿@model DoctorsOffice.Data.Patient
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2 class="dark-text">Delete patient</h2>
+
+<h3 class="dark-text">Are you sure you want to delete this?</h3>
+<div>
+    <h4 class="dark-text">Patient</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Social Security Number
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PatientSocialSecurityNumber)
+        </dd>
+
+        <dt>
+            Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            Personal Doctor
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PersonalDoctor.LastName)
+        </dd>
+
+        <dt>
+            Address
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            Phone Number
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </dd>
+
+        <dt>
+            Email
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            Date of Birth
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfBirth)
+        </dd>
+
+        <dt>
+            Height
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Height)
+        </dd>
+
+        <dt>
+            Weight
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Weight)
+        </dd>
+
+        <dt>
+            Bloodtype
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BloodType)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="dark-text">
+            <button type="submit" value="Delete" class="btn btn-default dark-blue-bckg light-text">Delete</button>
+            <strong class="back-link">  | @Html.ActionLink("Back to List", "Index")</strong>
+        </div>
+    }
+</div>

@@ -1,0 +1,37 @@
+﻿@model DoctorsOffice.Data.Doctor
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2 class="dark-text">Delete doctor</h2>
+<hr />
+
+<div>
+    
+    <div class="alert alert-info fade show blue-bckg font-weight-bold mon dark-text" role="alert">
+        @ViewBag.Message
+        @*<button type="button" class="close" data-dismiss="alert" aria-label="Ok">
+            <span aria-hidden="true" class="font-weight-bold dark-text">OK</span>
+        </button>*@
+    </div>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="dark-text">
+            <button type="submit" value="Delete" class="btn btn-default dark-blue-bckg light-text">Delete</button> 
+            <strong class="back-link">  | @Html.ActionLink("Back to List", "Index")</strong>
+        </div>
+    }
+</div>
+
+
+@*@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert('@ViewBag.Message');
+        };
+    </script>
+}*@

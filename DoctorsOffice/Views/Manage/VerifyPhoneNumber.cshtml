@@ -1,0 +1,31 @@
+﻿@model DoctorsOffice.ViewModels.VerifyPhoneNumberViewModel
+@{
+    ViewBag.Title = "Verify Phone Number";
+}
+
+<h2 class="dark-text">@ViewBag.Title.</h2>
+
+@using (Html.BeginForm("VerifyPhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("phoneNumber", @Model.PhoneNumber)
+    <h4 class="dark-text">Enter verification code</h4>
+    <h5 class="dark-text">@ViewBag.Status</h5>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group dark-text">
+        @Html.LabelFor(m => m.Code, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Code, new { @class = "form-control input-fields" })
+        </div>
+    </div>
+    <div class="form-group dark-text">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default dark-blue-bckg light-text" value="Submit">Submit</button>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

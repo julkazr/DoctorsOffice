@@ -1,0 +1,67 @@
+﻿@model DoctorsOffice.Data.Examination
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2 class="dark-text">Examination's details</h2>
+
+<div>
+    @*<h4 class="dark-text">Examination</h4>*@
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Patient
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Patient.LastName)
+        </dd>
+
+        <dt>
+            Doctor
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Doctor.LastName)
+        </dd>
+
+        <dt>
+            Date of Examination
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateOfVisit)
+        </dd>
+
+        <dt>
+            Diagnose
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DiagnoseCode)
+        </dd>
+
+        <dt>
+            Lab Results
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LabResults)
+        </dd>
+
+        <dt>
+            Examination Results
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExamResults)
+        </dd>
+
+    </dl>
+</div>
+<p class="dark-text text-bold">
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+<p class="dark-text">*For printing of this examination go to edit form.</p>

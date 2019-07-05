@@ -15,7 +15,6 @@ namespace DoctorsOffice.DbContexts
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Examination> Examinations { get; set; }
-        public DbSet<File> Files { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
@@ -45,9 +44,6 @@ namespace DoctorsOffice.DbContexts
                 .WithMany()
                 .HasForeignKey(e => e.DoctorID)
                 .WillCascadeOnDelete(false);
-            modelBuilder.Entity<File>()
-                .HasRequired(f => f.Doctor)
-                .WithOptional();
         }
     }
 }

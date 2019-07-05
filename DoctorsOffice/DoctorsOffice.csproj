@@ -181,7 +181,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PatientsController.cs" />
-    <Compile Include="Data\File.cs" />
     <Compile Include="DbContexts\ApplicationDbContext.cs" />
     <Compile Include="DbContexts\DBInitializer.cs" />
     <Compile Include="Global.asax.cs">
@@ -192,6 +191,8 @@
     <Compile Include="Data\Doctor.cs" />
     <Compile Include="Data\Examination.cs" />
     <Compile Include="Data\IdentityModels.cs" />
+    <Compile Include="ViewModels\DoctorDeleteViewModel.cs" />
+    <Compile Include="ViewModels\DoctorEditViewModel.cs" />
     <Compile Include="ViewModels\DoctorListViewModel.cs" />
     <Compile Include="ViewModels\DoctorsExaminationListViewModel.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
@@ -319,6 +320,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 using DoctorsOffice.Data;
 using PagedList;
 
@@ -36,7 +37,5 @@ namespace DoctorsOffice.ViewModels
                 return FirstName + " " + LastName;
             }
         }
-
-        public virtual File File { get; set; }
     }
 }

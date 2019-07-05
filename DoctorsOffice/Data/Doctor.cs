@@ -12,6 +12,5 @@ namespace DoctorsOffice.Data
         public string Position { get; set; }
 
         public virtual ICollection<Examination> Examinations { get; set; }
-        public virtual File File { get; set; }
     }
 }

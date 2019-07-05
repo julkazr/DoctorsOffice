@@ -26,64 +26,32 @@ namespace DoctorsOffice.Controllers
             DoctorListViewModel viewModel = new DoctorListViewModel();
 
             IQueryable<Doctor> doctorsQuery = db.Doctors;
-                                              //.Include(d => d.File);
-
-            //viewModel.Doctors = db.Doctors
-            //    .OrderBy(i => i.LastName)
-            //    .Select(d => new DoctorBriefViewModel()
-            //    {
-            //        Id = d.ID,
-            //        FullName = d.GetFullName,
-            //        Email = d.Email,
-            //        Position = d.Position,
-            //        PhoneNumber = d.PhoneNumber
-            //    })
-            //    .ToPagedList(pageNumber, pageSize);
-            
-            //int count = viewModel.Doctors.Count();
-            //decimal totalPages = ((decimal)count / (decimal)pageSize);
-            //ViewBag.TotalPages = Math.Ceiling(totalPages);
-            //ViewBag.OnePageOfDoctors = viewModel.Doctors;
-            //ViewBag.PageNumber = pageNumber;
 
             if (!string.IsNullOrEmpty(searchByName))
             {
-                doctorsQuery = doctorsQuery.Where(d => d.FirstName.Contains(searchByName) || d.LastName.Contains(searchByName));
-                //viewModel.Doctors = db.Doctors
-                //    .Where(d => d.FirstName.Contains(searchByName))
-                //    .Select(d => new DoctorBriefViewModel()
-                //    {
-                //        Id = d.ID,
-                //        FullName = d.GetFullName,
-                //        Email = d.Email,
-                //        Position = d.Position,
-                //        PhoneNumber = d.PhoneNumber
-                //    })
-                //    .ToPagedList(pageNumber, pageSize);
+                doctorsQuery = doctorsQuery
+                    .Where(d => d.FirstName.Contains(searchByName) || d.LastName.Contains(searchByName));
+                
             }
             if (!string.IsNullOrEmpty(searchByPosition))
             {
                 doctorsQuery = doctorsQuery.Where(d => d.Position.Contains(searchByPosition));
-                //viewModel.Doctors = viewModel.Doctors.Where(d => d.Position.Contains(searchByPosition)).ToPagedList(pageNumber, pageSize);
+              
             }
 
             switch (sort)
             {
                 case "name_desc":
                     doctorsQuery = doctorsQuery.OrderByDescending(d => d.LastName).ThenByDescending(d => d.FirstName);
-                    //viewModel.Doctors = viewModel.Doctors.OrderByDescending(d => d.LastName).ToPagedList(pageNumber, pageSize);
                     break;
                 case "position":
                     doctorsQuery = doctorsQuery.OrderBy(d => d.Position);
-                    //viewModel.Doctors = viewModel.Doctors.OrderBy(d => d.Position).ToPagedList(pageNumber, pageSize);
                     break;
                 case "position_desc":
                     doctorsQuery = doctorsQuery.OrderByDescending(d => d.Position);
-                    //viewModel.Doctors = viewModel.Doctors.OrderByDescending(d => d.Position).ToPagedList(pageNumber, pageSize);
                     break;
                 default:
                     doctorsQuery = doctorsQuery.OrderBy(d => d.LastName).ThenBy(d => d.FirstName);
-                    //viewModel.Doctors = viewModel.Doctors.OrderBy(d => d.LastName).ToPagedList(pageNumber, pageSize);
                     break;
             }
             viewModel.Doctors = doctorsQuery
@@ -120,7 +88,19 @@ namespace DoctorsOffice.Controllers
             {
                 return HttpNotFound();
             }
-            return View(doctor);
+            DoctorEditViewModel viewModel = new DoctorEditViewModel();
+            viewModel.Doctor = new DoctorViewModel
+            {
+                DoctorID = doctor.ID,
+                FirstName = doctor.FirstName,
+                LastName = doctor.LastName,
+                Address = doctor.Address,
+                PhoneNumber = doctor.PhoneNumber,
+                Email = doctor.Email,
+                Position = doctor.Position
+            };
+            
+            return View(viewModel);
         }
 
         // GET: Doctors/Create
@@ -135,29 +115,39 @@ namespace DoctorsOffice.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,Address,PhoneNumber,Email,Position")] Doctor doctor, HttpPostedFileBase upload)
+        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,Address,PhoneNumber,Email,Position,File")] Doctor doctor, HttpPostedFileBase upload)
         {
             DoctorBriefViewModel viewModel = new DoctorBriefViewModel();
             if (ModelState.IsValid)
             {
-                if (upload != null && upload.ContentLength > 0)
-                {
-                    var picture = new File()
-                    {
-                        FileName = System.IO.Path.GetFileName(upload.FileName),
-                        Filetype = FileType.Picture,
-                        ContentType = upload.ContentType
-                    };
-                    using (var reader = new System.IO.BinaryReader(upload.InputStream))
-                    {
-                        picture.Content = reader.ReadBytes(upload.ContentLength);
-                    }
+                //if (upload != null && upload.ContentLength > 0)
+                //{
 
-                    doctor.File = new File();
-                    
-                }
+                //    var picture = new File()
+                //    {
+                //        FileName = System.IO.Path.GetFileName(upload.FileName),
+                //        ContentType = upload.ContentType
+                //    };
+                //    using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                //    {
+                //        picture.Content = reader.ReadBytes(upload.ContentLength);
+                //    }
+
+                //    doctor.File = new File()
+                //    {
+                //        FileID = picture.FileID,
+                //        DoctorID = doctor.ID,
+                //        FileName = picture.FileName,
+                //        ContentType = picture.ContentType,
+                //        Content = picture.Content
+                //    };
+                //    db.Files.Add(picture);
+                //    db.SaveChanges();
+                //}
+
                 db.Doctors.Add(doctor);
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 
@@ -167,22 +157,30 @@ namespace DoctorsOffice.Controllers
         // GET: Doctors/Edit/5
         public ActionResult Edit(int? id)
         {
-            DoctorBriefViewModel viewModel = new DoctorBriefViewModel();
-            
             Doctor doctor = db.Doctors.Find(id);
-            Doctor doctorEditQuery = db.Doctors.Include(d => d.File).SingleOrDefault(d => d.ID == id);
-            File fileQuery = db.Files.SingleOrDefault(f => f.DoctorID == id);
-            //viewModel.File = fileQuery.Select(d => new DoctorBriefViewModel()
-            //{
-            //    ID = d.ID,
-            //    FirstName = d.FirstName,
-            //    LastName = d.LastName,
-            //    Address = d.Address,
-            //    PhoneNumber = d.PhoneNumber,
-            //    Email = d.Email,
-            //    Position = d.Position,
-            //    File = d.File.Content
-            //});
+            //var doctorEditQuery = db.Doctors
+            //                      .Include(d => d.File);
+            //IQueryable<File> doctorPictureQuery = db.Files
+            //                         .Include(f => f.Doctor)
+            //                         .Where(f => f.DoctorID == id);
+            DoctorEditViewModel viewModel = new DoctorEditViewModel();
+            viewModel.Doctor = new DoctorViewModel
+            {
+                DoctorID = doctor.ID,
+                FirstName = doctor.FirstName,
+                LastName = doctor.LastName,
+                Address = doctor.Address,
+                PhoneNumber = doctor.PhoneNumber,
+                Email = doctor.Email,
+                Position = doctor.Position
+            };
+
+            //doctorPictureQuery = doctorPictureQuery.Where(f => f.DoctorID == id);
+
+            //viewModel.Files = doctorPictureQuery.FirstOrDefault(f => f.DoctorID == id);
+
+
+
 
             return View(viewModel);
         }
@@ -192,32 +190,43 @@ namespace DoctorsOffice.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,Address,PhoneNumber,Email,Position")] Doctor doctor)
+        public ActionResult Edit(int? id, DoctorEditViewModel viewModel)
         {
+            //DoctorEditViewModel viewModel = new DoctorEditViewModel();
+            Doctor doctorToUpdate = db.Doctors.Find(id);
             if (ModelState.IsValid)
             {
-                db.Entry(doctor).State = EntityState.Modified;
+
+                doctorToUpdate.FirstName = viewModel.Doctor.FirstName;
+                doctorToUpdate.LastName = viewModel.Doctor.LastName;
+                doctorToUpdate.Address = viewModel.Doctor.Address;
+                doctorToUpdate.PhoneNumber = viewModel.Doctor.PhoneNumber;
+                doctorToUpdate.Email = viewModel.Doctor.Email;
+                doctorToUpdate.Position = viewModel.Doctor.Position;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(doctor);
+            
+            return View(viewModel);
         }
 
         // GET: Doctors/Delete/5
         public ActionResult Delete(int? id)
         {
+            DoctorDeleteViewModel viewModel = new DoctorDeleteViewModel();
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Doctor doctor = db.Doctors.Find(id);
-            ViewBag.DoctorName = doctor.FirstName + " " + doctor.LastName;
+            
+            viewModel.DoctorName = doctor.FirstName + " " + doctor.LastName;
             if (doctor == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Message = "Are you sure you want to delete informations for doctor " + ViewBag.DoctorName +" ?";
-            return View(doctor);
+            viewModel.Alert = "Are you sure you want to delete informations for doctor " + viewModel.DoctorName +" ?";
+            return View(viewModel);
         }
 
         // POST: Doctors/Delete/5
@@ -228,7 +237,6 @@ namespace DoctorsOffice.Controllers
             Doctor doctor = db.Doctors.Find(id);
             db.Doctors.Remove(doctor);
             db.SaveChanges();
-            //ViewBag.Message = "Are you sure you want to delete these informations?";
             return RedirectToAction("Index");
 
             //return View();
@@ -255,7 +263,7 @@ namespace DoctorsOffice.Controllers
             }
 
             examinationQuery = examinationQuery.Where(exam => exam.DoctorID == doctorId);
-            var anotherQuery = examinationQuery
+            var singleDoctorExaminationQuery = examinationQuery
                                 .Select(exam => new DoctorsExaminationsViewModel()
                                 {
                                     ID = exam.ID,
@@ -269,22 +277,22 @@ namespace DoctorsOffice.Controllers
             switch (sort)
             {
                 case "date_asc":
-                    anotherQuery = anotherQuery.OrderBy(exam => exam.ExamDate);
+                    singleDoctorExaminationQuery = singleDoctorExaminationQuery.OrderBy(exam => exam.ExamDate);
                     break;
                 case "Name":
-                    anotherQuery = anotherQuery.OrderBy(exam => exam.PatientLastName).ThenBy(exam => exam.PatientFirstName);
+                    singleDoctorExaminationQuery = singleDoctorExaminationQuery.OrderBy(exam => exam.PatientLastName).ThenBy(exam => exam.PatientFirstName);
                     break;
                 case "name_desc":
-                    anotherQuery = anotherQuery.OrderByDescending(exam => exam.PatientLastName).ThenByDescending(exam => exam.PatientFirstName);
+                    singleDoctorExaminationQuery = singleDoctorExaminationQuery.OrderByDescending(exam => exam.PatientLastName).ThenByDescending(exam => exam.PatientFirstName);
                     break;
                 default:
-                    anotherQuery = anotherQuery.OrderByDescending(exam => exam.ExamDate);
+                    singleDoctorExaminationQuery = singleDoctorExaminationQuery.OrderByDescending(exam => exam.ExamDate);
                     break;
             }
 
             
 
-            viewModel.Examinations = anotherQuery
+            viewModel.Examinations = singleDoctorExaminationQuery
                                     .ToPagedList(pageNumber, pageSize);
             viewModel.SortByDate = string.IsNullOrEmpty(sort) ? "date_asc" : "";
             viewModel.SortByPatientName = sort == "Name" ? "name_desc" : "Name";

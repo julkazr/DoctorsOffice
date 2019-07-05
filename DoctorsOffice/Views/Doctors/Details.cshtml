@@ -1,4 +1,4 @@
-﻿@model DoctorsOffice.Data.Doctor
+﻿@model DoctorsOffice.ViewModels.DoctorEditViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -11,64 +11,64 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
+            @Html.DisplayNameFor(model => model.Doctor.FirstName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.FirstName)
+            @Html.DisplayFor(model => model.Doctor.FirstName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayNameFor(model => model.Doctor.LastName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.LastName)
+            @Html.DisplayFor(model => model.Doctor.LastName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Position)
+            @Html.DisplayNameFor(model => model.Doctor.Position)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Position)
+            @Html.DisplayFor(model => model.Doctor.Position)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Address)
+            @Html.DisplayNameFor(model => model.Doctor.Address)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Address)
+            @Html.DisplayFor(model => model.Doctor.Address)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.PhoneNumber)
+            @Html.DisplayNameFor(model => model.Doctor.PhoneNumber)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PhoneNumber)
+            @Html.DisplayFor(model => model.Doctor.PhoneNumber)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Email)
+            @Html.DisplayNameFor(model => model.Doctor.Email)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Email)
+            @Html.DisplayFor(model => model.Doctor.Email)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Examinations)
+            Examinations
         </dt>
 
         <dd>
-            @Html.ActionLink("See all examinations", "ExaminationList")
+            @Html.ActionLink("See all examinations", "ExaminationList", new { doctorId = Model.Doctor.DoctorID })
         </dd>
 
     </dl>
 </div>
 <p>
-    <strong class="back-link">@Html.ActionLink("Edit", "Edit", new { id = Model.ID }) | </strong>
+    <strong class="back-link">@Html.ActionLink("Edit", "Edit", new { id = Model.Doctor.DoctorID }) | </strong>
     <strong class="back-link">@Html.ActionLink("Back to List", "Index")</strong>
 </p>

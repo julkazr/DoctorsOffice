@@ -1,4 +1,4 @@
-﻿@model DoctorsOffice.Data.Doctor
+﻿@model DoctorsOffice.ViewModels.DoctorDeleteViewModel
 
 @{
     ViewBag.Title = "Delete";
@@ -10,7 +10,7 @@
 <div>
     
     <div class="alert alert-info fade show blue-bckg font-weight-bold mon dark-text" role="alert">
-        @ViewBag.Message
+        @Html.DisplayFor(model => model.Alert)
         @*<button type="button" class="close" data-dismiss="alert" aria-label="Ok">
             <span aria-hidden="true" class="font-weight-bold dark-text">OK</span>
         </button>*@

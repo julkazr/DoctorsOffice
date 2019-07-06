@@ -19,8 +19,18 @@
 
         <form>
             <div class="row">
+                <div class="form-group dark-text">
+                    @Html.Label("Photo", new { @class = "control-label col-md-2" })<br />
+                    <img src="@Url.Content(Model.Image.ImgUrl)" />
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Image.ImgUpload, new { type = "file", name = "upload" })
+                        @Html.ValidationMessageFor(model => model.Image.ImgUpload, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <h4 class="col-md-6 dark-text">Doctor</h4>
-              
+
                 <h4 class="col-md-6 dark-text">Contact info</h4>
             </div>
             <div class="row">

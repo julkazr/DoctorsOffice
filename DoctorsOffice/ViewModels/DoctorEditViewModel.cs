@@ -10,6 +10,7 @@ namespace DoctorsOffice.ViewModels
     public class DoctorEditViewModel
     {
         public DoctorViewModel Doctor { get; set; }
+        public ImageViewModel Image { get; set; }
     }
 
     public class DoctorViewModel: DoctorBriefViewModel

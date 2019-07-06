@@ -15,6 +15,7 @@ namespace DoctorsOffice.DbContexts
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Examination> Examinations { get; set; }
+        public DbSet<Image> Images { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
@@ -32,6 +33,8 @@ namespace DoctorsOffice.DbContexts
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Doctor>().ToTable("Doctors")
                 .HasMany(d => d.Examinations);
+            modelBuilder.Entity<Doctor>()
+                .HasOptional(d => d.Image);
             modelBuilder.Entity<Patient>().ToTable("Patients")
                 .HasMany(p => p.Examinations);
             modelBuilder.Entity<Examination>()

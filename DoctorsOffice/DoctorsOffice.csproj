@@ -181,6 +181,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PatientsController.cs" />
+    <Compile Include="Data\Image.cs" />
     <Compile Include="DbContexts\ApplicationDbContext.cs" />
     <Compile Include="DbContexts\DBInitializer.cs" />
     <Compile Include="Global.asax.cs">
@@ -191,6 +192,7 @@
     <Compile Include="Data\Doctor.cs" />
     <Compile Include="Data\Examination.cs" />
     <Compile Include="Data\IdentityModels.cs" />
+    <Compile Include="ViewModels\DoctorCreateViewModel.cs" />
     <Compile Include="ViewModels\DoctorDeleteViewModel.cs" />
     <Compile Include="ViewModels\DoctorEditViewModel.cs" />
     <Compile Include="ViewModels\DoctorListViewModel.cs" />
@@ -237,6 +239,7 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
+    <Content Include="libman.json" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />

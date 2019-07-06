@@ -106,7 +106,7 @@ namespace DoctorsOffice.Controllers
         // GET: Doctors/Create
         public ActionResult Create()
         {
-            DoctorBriefViewModel viewModel = new DoctorBriefViewModel();
+            DoctorCreateViewModel viewModel = new DoctorCreateViewModel();
             return View(viewModel);
         }
 
@@ -115,9 +115,23 @@ namespace DoctorsOffice.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,FirstName,LastName,Address,PhoneNumber,Email,Position,File")] Doctor doctor, HttpPostedFileBase upload)
+        public ActionResult Create(DoctorCreateViewModel viewModel)
         {
-            DoctorBriefViewModel viewModel = new DoctorBriefViewModel();
+            
+            var validImageTypes = new string[]
+            {
+                "image/gif",
+                "image/jpeg",
+                "image/png"
+            };
+            if(viewModel.Image.ImgUpload == null || viewModel.Image.ImgUpload.ContentLength == 0)
+            {
+                ModelState.AddModelError("ImgUpload", "This field is required");
+            }
+            else if(!validImageTypes.Contains(viewModel.Image.ImgUpload.ContentType))
+            {
+                ModelState.AddModelError("ImgUpload", "Please, choose either GIF, JPG, or PNG type of files.");
+            }
             if (ModelState.IsValid)
             {
                 //if (upload != null && upload.ContentLength > 0)
@@ -144,7 +158,29 @@ namespace DoctorsOffice.Controllers
                 //    db.Files.Add(picture);
                 //    db.SaveChanges();
                 //}
-
+                var image = new Image();
+                if (viewModel.Image.ImgUpload != null && viewModel.Image.ImgUpload.ContentLength > 0)
+                {
+                    var imgFileName = Guid.NewGuid().ToString() + GetExtension(viewModel.Image.ImgUpload.ContentType);
+                    var uploadDir = "~/Uploads";
+                    var imagePath = System.IO.Path.Combine(Server.MapPath(uploadDir), imgFileName);
+                    var imageUrl = System.IO.Path.Combine(uploadDir, imgFileName);
+                    viewModel.Image.ImgUpload.SaveAs(imagePath);
+                    image.ImgUrl = imageUrl;
+                }
+                db.Images.Add(image);
+                //db.SaveChanges();
+                Doctor doctor = new Doctor
+                {
+                    FirstName = viewModel.Doctor.FirstName,
+                    LastName = viewModel.Doctor.LastName,
+                    Address = viewModel.Doctor.Address,
+                    PhoneNumber = viewModel.Doctor.PhoneNumber,
+                    Email = viewModel.Doctor.Email,
+                    Position = viewModel.Doctor.Position,
+                    Image = image
+                };
+                
                 db.Doctors.Add(doctor);
                 db.SaveChanges();
 
@@ -154,15 +190,36 @@ namespace DoctorsOffice.Controllers
             return View(viewModel);
         }
 
+        private string GetExtension (string contentType)
+        {
+            if(contentType.Equals("image/jpeg",StringComparison.CurrentCultureIgnoreCase))
+            {
+                return ".jpg";
+            }
+            else if(contentType.Equals("image/gif", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return ".gif";
+            }
+            else if(contentType.Equals("image/png", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return ".png";
+            }
+            else
+            {
+                return ".bin";
+            }
+        }
+
         // GET: Doctors/Edit/5
         public ActionResult Edit(int? id)
         {
             Doctor doctor = db.Doctors.Find(id);
             //var doctorEditQuery = db.Doctors
             //                      .Include(d => d.File);
-            //IQueryable<File> doctorPictureQuery = db.Files
-            //                         .Include(f => f.Doctor)
-            //                         .Where(f => f.DoctorID == id);
+            var doctorName = doctor.FirstName + " " + doctor.LastName;
+
+            Image image = doctor.Image;
+
             DoctorEditViewModel viewModel = new DoctorEditViewModel();
             viewModel.Doctor = new DoctorViewModel
             {
@@ -173,6 +230,12 @@ namespace DoctorsOffice.Controllers
                 PhoneNumber = doctor.PhoneNumber,
                 Email = doctor.Email,
                 Position = doctor.Position
+            };
+
+            viewModel.Image = new ImageViewModel
+            {
+                //ImgUpload = image,
+                ImgUrl = image.ImgUrl
             };
 
             //doctorPictureQuery = doctorPictureQuery.Where(f => f.DoctorID == id);
@@ -194,8 +257,40 @@ namespace DoctorsOffice.Controllers
         {
             //DoctorEditViewModel viewModel = new DoctorEditViewModel();
             Doctor doctorToUpdate = db.Doctors.Find(id);
+            var doctorName = doctorToUpdate.FirstName + " " + doctorToUpdate.LastName;
+            viewModel.Image.DoctorName = doctorName;
+           
+            var validImageTypes = new string[]
+           {
+                "image/gif",
+                "image/jpeg",
+                "image/png"
+           };
+            if (viewModel.Image.ImgUpload == null || viewModel.Image.ImgUpload.ContentLength == 0)
+            {
+                ModelState.AddModelError("ImgUpload", "This field is required");
+            }
+            else if (!validImageTypes.Contains(viewModel.Image.ImgUpload.ContentType))
+            {
+                ModelState.AddModelError("ImgUpload", "Please, choose either GIF, JPG, or PNG type of files.");
+            }
             if (ModelState.IsValid)
             {
+                Image image = doctorToUpdate.Image;
+                image.ImgUrl = viewModel.Image.ImgUrl;
+                if (viewModel.Image.ImgUpload != null && viewModel.Image.ImgUpload.ContentLength > 0)
+                {
+                    if(viewModel.Image.ImgUrl != "")
+                    {
+                        db.Images.Remove(image);
+                    }
+                    var uploadDir = "~/Uploads";
+                    var imagePath = System.IO.Path.Combine(Server.MapPath(uploadDir), viewModel.Image.ImgUpload.FileName);
+                    var imageUrl = System.IO.Path.Combine(uploadDir, viewModel.Image.ImgUpload.FileName);
+                    viewModel.Image.ImgUpload.SaveAs(imagePath);
+                    image.ImgUrl = imageUrl;
+                }
+                db.SaveChanges();
 
                 doctorToUpdate.FirstName = viewModel.Doctor.FirstName;
                 doctorToUpdate.LastName = viewModel.Doctor.LastName;

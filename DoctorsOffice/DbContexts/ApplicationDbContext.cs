@@ -34,7 +34,8 @@ namespace DoctorsOffice.DbContexts
             modelBuilder.Entity<Doctor>().ToTable("Doctors")
                 .HasMany(d => d.Examinations);
             modelBuilder.Entity<Doctor>()
-                .HasOptional(d => d.Image);
+                .HasRequired(d => d.Image)
+                .WithMany();
             modelBuilder.Entity<Patient>().ToTable("Patients")
                 .HasMany(p => p.Examinations);
             modelBuilder.Entity<Examination>()

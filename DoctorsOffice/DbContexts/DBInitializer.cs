@@ -12,6 +12,13 @@ namespace DoctorsOffice.DbContexts
         
         protected override void Seed(ApplicationDbContext context)
         {
+            var image = new Image
+            {
+                ID = 1,
+                ImgUrl = "~/Img/doc-img-default.png"
+            };
+            context.Images.Add(image);
+            context.SaveChanges();
 
             var doctors = new List<Doctor>
             {
@@ -22,7 +29,8 @@ namespace DoctorsOffice.DbContexts
                     LastName = "Goldstein",
                     Email = "drface@doctorsoffice.mail",
                     PhoneNumber = "061498984",
-                    Position = "plastic surgery"
+                    Position = "plastic surgery",
+                    ImageID = 1
                 },
                 new Doctor
                 {
@@ -31,7 +39,8 @@ namespace DoctorsOffice.DbContexts
                     LastName = "Volkov",
                     Email = "hands@doctorsoffice.mail",
                     PhoneNumber = "0611549375",
-                    Position = "surgery"
+                    Position = "surgery",
+                    ImageID = 1
                 },
                 new Doctor
                 {
@@ -40,7 +49,8 @@ namespace DoctorsOffice.DbContexts
                     LastName = "Sparks",
                     Email = "eyedr@doctorsoffice.mail",
                     PhoneNumber = "061432987",
-                    Position = "oftalmologist"
+                    Position = "oftalmologist",
+                    ImageID = 1
                 }
             };
             doctors.ForEach(d => context.Doctors.Add(d));
@@ -169,6 +179,7 @@ namespace DoctorsOffice.DbContexts
             };
             examinations.ForEach(e => context.Examinations.Add(e));
             context.SaveChanges();
+
 
            // base.Seed(context);
         }

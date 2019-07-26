@@ -10,7 +10,7 @@ namespace DoctorsOffice.Data
     {
         [Required]
         public string Position { get; set; }
-        public int? ImageID { get; set; }
+        public int ImageID { get; set; }
 
         public virtual ICollection<Examination> Examinations { get; set; }
         public virtual Image Image { get; set; }

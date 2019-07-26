@@ -10,5 +10,6 @@ namespace DoctorsOffice.ViewModels
         public int ID { get; set; }
         public string DoctorName { get; set; }
         public string Alert { get; set; }
+        public ImageViewModel Image { get; set; }
     }
 }

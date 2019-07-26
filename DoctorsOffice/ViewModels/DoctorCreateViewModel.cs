@@ -14,6 +14,7 @@ namespace DoctorsOffice.ViewModels
 
     public class ImageViewModel
     {
+        public int ID { get; set; }
         [DataType(DataType.Upload)]
         public HttpPostedFileBase ImgUpload { get; set; }
         public string ImgUrl { get; set; }

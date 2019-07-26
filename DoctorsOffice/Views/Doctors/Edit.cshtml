@@ -5,9 +5,9 @@
 }
 
 <h2 class="dark-text">Change doctor's info</h2>
+<h4 class="dark-text">@Model.DoctorsName</h4>
 
-
-@using (Html.BeginForm("Edit", "Doctors", new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Edit", "Doctors", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
@@ -17,17 +17,9 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Doctor.ID)
 
+        <img src="@(Url.Content(Model.Image.ImgUrl))" />
+
         <form>
-            <div class="row">
-                <div class="form-group dark-text">
-                    @Html.Label("Photo", new { @class = "control-label col-md-2" })<br />
-                    <img src="@Url.Content(Model.Image.ImgUrl)" />
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.Image.ImgUpload, new { type = "file", name = "upload" })
-                        @Html.ValidationMessageFor(model => model.Image.ImgUpload, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
             <div class="row">
                 <h4 class="col-md-6 dark-text">Doctor</h4>
 
@@ -81,13 +73,23 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="form-group dark-text">
+                    @Html.Label("Photo", new { @class = "control-label col-md-2" })<br />
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.Image.ImgUpload, new { type = "file" })
+                        @Html.ValidationMessageFor(model => model.Image.ImgUpload, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
             <div class="form-group dark-text">
                 <button type="submit" value="Save" class="btn btn-default dark-blue-bckg light-text">Save</button>
                 <strong class="back-link">   |  @Html.ActionLink("Back to List", "Index")</strong>
             </div>
         </form>
+        
     </div>
- 
+
 }
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

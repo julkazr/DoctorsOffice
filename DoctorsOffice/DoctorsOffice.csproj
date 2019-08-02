@@ -190,6 +190,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ImageManipulation.cs" />
+    <Compile Include="Translators\DoctorTranslator.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Data\BloodType.cs" />
     <Compile Include="Data\Doctor.cs" />
@@ -263,6 +265,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Uploads\3fc0f6d4-2448-4368-a17c-c31d93cbdf14.jpg" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -327,7 +330,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Uploads\" />
+    <Folder Include="Views\Image\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

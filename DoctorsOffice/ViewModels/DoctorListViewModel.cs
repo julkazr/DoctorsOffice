@@ -29,6 +29,7 @@ namespace DoctorsOffice.ViewModels
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Position { get; set; }
+        public int ImageID { get; set; }
 
         public string GetFullName
         {

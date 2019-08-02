@@ -9,8 +9,8 @@ namespace DoctorsOffice.Data
     public class Image
     {
         public int ID { get; set; }
-        
-        [Required]
+        public byte[] Content { get; set; }
+        public string ContentType { get; set; }
         [DataType(DataType.ImageUrl)]
         public string ImgUrl { get; set; }
     }

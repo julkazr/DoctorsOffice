@@ -18,6 +18,7 @@ namespace DoctorsOffice.Controllers
         // GET: Patients
         public ActionResult Index()
         {
+
             var patients = db.Patients.Include(p => p.PersonalDoctor);
             return View(patients.ToList());
         }

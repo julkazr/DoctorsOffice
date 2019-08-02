@@ -11,7 +11,7 @@ namespace DoctorsOffice.Data
     {
         public string PatientSocialSecurityNumber { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
         public double Height { get; set; }
         public double Weight { get; set; }

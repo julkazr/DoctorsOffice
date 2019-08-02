@@ -6,21 +6,29 @@
 
 <h2 class="dark-text">Delete doctor</h2>
 <hr />
-<img src="@(Url.Content(Model.Image.ImgUrl))?w=200&h=200" />
-<div>
-    
+@if (Model.Image.ImgUrl != null)
+{
+    <img src="@(Url.Content(Model.Image.ImgUrl))" class="col-md-2 float-md-right" />
+}
+@if (Model.Image.ImgUrl == null)
+{
+    <img src="@Url.Action("GetImage", new { id = Model.Image.ID})" alt="Doctors photo" class="col-md-2 float-md-right" />
+}
+<div class="col-md-9">
+
     <div class="alert alert-info fade show blue-bckg font-weight-bold mon dark-text" role="alert">
         @Html.DisplayFor(model => model.Alert)
         @*<button type="button" class="close" data-dismiss="alert" aria-label="Ok">
-            <span aria-hidden="true" class="font-weight-bold dark-text">OK</span>
-        </button>*@
+                <span aria-hidden="true" class="font-weight-bold dark-text">OK</span>
+            </button>*@
     </div>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="dark-text">
-            <button type="submit" value="Delete" class="btn btn-default dark-blue-bckg light-text">Delete</button> 
+            <button type="submit" value="Delete" class="btn btn-default dark-blue-bckg light-text">Delete</button>
             <strong class="back-link">  | @Html.ActionLink("Back to List", "Index")</strong>
         </div>
     }
@@ -28,10 +36,10 @@
 
 
 @*@if (ViewBag.Message != null)
-{
-    <script type="text/javascript">
-        window.onload = function () {
-            alert('@ViewBag.Message');
-        };
-    </script>
-}*@
+    {
+        <script type="text/javascript">
+            window.onload = function () {
+                alert('@ViewBag.Message');
+            };
+        </script>
+    }*@

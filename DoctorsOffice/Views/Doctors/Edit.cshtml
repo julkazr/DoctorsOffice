@@ -16,10 +16,14 @@
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Doctor.ID)
-
-    @*<img src="@(Url.Content(Model.Image.ImgUrl))" />*@
-    
-    <img src="@Url.Action("GetImage", new { id = Model.Doctor.ImageID})" alt="Doctors photo" class="col-md-2" />
+    @if (Model.Image.ImgUrl != null)
+    {
+        <img src="@(Url.Content(Model.Image.ImgUrl))" />
+    }
+    @if (Model.Image.ImgUrl == null)
+    {
+        <img src="@Url.Action("GetImage", new { id = Model.Doctor.ImageID})" alt="Doctors photo" class="col-md-2" />
+    }
 
     <form>
         <div class="row">

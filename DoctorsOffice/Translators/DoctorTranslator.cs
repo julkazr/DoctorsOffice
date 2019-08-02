@@ -22,5 +22,57 @@ namespace DoctorsOffice.Translators
             };
             return result;
         }
+
+        public DoctorViewModel ToDoctorViewModel(Doctor doctor)
+        {
+            var result = new DoctorViewModel
+            {
+                ID = doctor.ID,
+                FirstName = doctor.FirstName,
+                LastName = doctor.LastName,
+                Address = doctor.Address,
+                PhoneNumber = doctor.PhoneNumber,
+                Email = doctor.Email,
+                Position = doctor.Position,
+                ImageID = doctor.ImageID
+            };
+            return result;
+        }
+
+        public ImageViewModel ToImageViewModel(Image image, Doctor doctor)
+        {
+            var result = new ImageViewModel
+            {
+                ID = image.ID,
+                ImgUrl = image.ImgUrl,
+                DoctorName = doctor.FirstName + " " + doctor.LastName
+            };
+            return result;
+        }
+        public ImageViewModel ToImageViewModel(Image image)
+        {
+            var result = new ImageViewModel
+            {
+                ID = image.ID,
+                ImgUrl = image.ImgUrl
+            };
+            return result;
+        }
+
+        public Doctor ToDoctorDataModel(DoctorCreateViewModel viewModel, Image image)
+        {
+            var result = new Doctor
+            {
+                FirstName = viewModel.Doctor.FirstName,
+                LastName = viewModel.Doctor.LastName,
+                Address = viewModel.Doctor.Address,
+                PhoneNumber = viewModel.Doctor.PhoneNumber,
+                Email = viewModel.Doctor.Email,
+                Position = viewModel.Doctor.Position,
+                ImageID = image.ID,
+                Image = image
+            };
+            return result;
+        }
     }
 }

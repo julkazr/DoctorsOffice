@@ -39,14 +39,14 @@ namespace DoctorsOffice.Helpers
 
         public void ImageUpload(Doctor doctor,Image image, HttpPostedFileBase imageUpload)
         {
-            var imgFileName = Guid.NewGuid().ToString() + GetExtension(imageUpload.ContentType);
+            //var imgFileName = Guid.NewGuid().ToString() + GetExtension(imageUpload.ContentType);
             using (var reader = new System.IO.BinaryReader(imageUpload.InputStream))
             {
                 image.Content = (reader.ReadBytes(imageUpload.ContentLength));
             }
             
             doctor.Image = image;
-
+            image.ContentType = imageUpload.ContentType;
         }
 
         //It don't work yet, resize is resolved in browser for now

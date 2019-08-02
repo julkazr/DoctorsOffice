@@ -78,30 +78,17 @@ namespace DoctorsOffice.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Doctor doctor = db.Doctors.Single(d => d.ID == id);
+            Doctor doctor = db.Doctors.SingleOrDefault(d => d.ID == id);
             if (doctor == null)
             {
                 return HttpNotFound();
             }
             DoctorEditViewModel viewModel = new DoctorEditViewModel();
-            viewModel.Doctor = new DoctorViewModel
-            {
-                ID = doctor.ID,
-                FirstName = doctor.FirstName,
-                LastName = doctor.LastName,
-                Address = doctor.Address,
-                PhoneNumber = doctor.PhoneNumber,
-                Email = doctor.Email,
-                Position = doctor.Position
-            };
+            DoctorTranslator doctorTranslator = new DoctorTranslator();
+            viewModel.Doctor = doctorTranslator.ToDoctorViewModel(doctor);
 
             Image image = db.Images.Single(i => i.ID == doctor.ImageID);
-            viewModel.Image = new ImageViewModel
-            {
-                ID = image.ID,
-                ImgUrl = image.ImgUrl,
-                DoctorName = doctor.FirstName + " " + doctor.LastName
-            };
+            viewModel.Image = doctorTranslator.ToImageViewModel(image, doctor);
 
             return View(viewModel);
         }
@@ -135,17 +122,8 @@ namespace DoctorsOffice.Controllers
                     ID = viewModel.Image.ID,
                     ContentType = viewModel.Image.ImgUpload.ContentType
                 };
-                Doctor doctor = new Doctor
-                {
-                    FirstName = viewModel.Doctor.FirstName,
-                    LastName = viewModel.Doctor.LastName,
-                    Address = viewModel.Doctor.Address,
-                    PhoneNumber = viewModel.Doctor.PhoneNumber,
-                    Email = viewModel.Doctor.Email,
-                    Position = viewModel.Doctor.Position,
-                    ImageID = image.ID,
-                    Image = image
-                };
+                DoctorTranslator doctorDataTranslator = new DoctorTranslator();
+                Doctor doctor = doctorDataTranslator.ToDoctorDataModel(viewModel, image);
                 ImageManipulation imageUploadHelper = new ImageManipulation();
                 if (viewModel.Image.ImgUpload != null && viewModel.Image.ImgUpload.ContentLength > 0)
                 {
@@ -153,6 +131,7 @@ namespace DoctorsOffice.Controllers
                     {
                         ModelState.AddModelError("ImgUpload", "Please, choose either GIF, JPG, or PNG type of files.");
                     }
+                    //upload with file-system
                     //var imgFileName = Guid.NewGuid().ToString() + GetExtension(viewModel.Image.ImgUpload.ContentType);
                     //var uploadDir = "~/Uploads";
                     //var imagePath = System.IO.Path.Combine(Server.MapPath(uploadDir), imgFileName);
@@ -160,19 +139,11 @@ namespace DoctorsOffice.Controllers
                     //viewModel.Image.ImgUpload.SaveAs(imagePath);
                     
                     imageUploadHelper.ImageUpload(doctor, image, viewModel.Image.ImgUpload);
-                    //imageUploadHelper.ResizeImage(viewModel.Image.ImgUpload);
+                    //imageUploadHelper.ResizeImage(viewModel.Image.ImgUpload);-don't work yet!!!
                     db.Images.Add(image);
-                    //ImageResizer.ResizeSettings resizeSettings = new ImageResizer.ResizeSettings
-                    //{
-                    //    Width = 200,
-                    //    Height = 200
-                    //};
-                    //ImageResizer.ImageBuilder.Current.Build(imagePath, imagePath, resizeSettings);
-                    //image.ImgUrl = imageUrl;
                 }
                 else
                 {
-                    //image.ImgUrl = "~/Img/doc-img-default.png";
                     imageUploadHelper.DefaultImage(doctor);
                 }
                 
@@ -192,30 +163,16 @@ namespace DoctorsOffice.Controllers
             var doctor = db.Doctors
                             .Include(d => d.Image)
                             .SingleOrDefault(d => d.ID == id);
-            var doctorName = doctor.FirstName + " " + doctor.LastName; 
+            var doctorName = doctor.FirstName + " " + doctor.LastName;
 
+            DoctorTranslator editDoctorTranslator = new DoctorTranslator();
             DoctorEditViewModel viewModel = new DoctorEditViewModel();
             viewModel.DoctorsName = doctorName;
-            viewModel.Doctor = new DoctorViewModel
-            {
-                ID = doctor.ID,
-                FirstName = doctor.FirstName,
-                LastName = doctor.LastName,
-                Address = doctor.Address,
-                PhoneNumber = doctor.PhoneNumber,
-                Email = doctor.Email,
-                Position = doctor.Position,
-                ImageID = doctor.ImageID
-            };
+            viewModel.Doctor = editDoctorTranslator.ToDoctorViewModel(doctor);
 
 
             Image image = db.Images.Single(i => i.ID == doctor.ImageID);
-            viewModel.Image = new ImageViewModel
-            {
-                ID = image.ID,
-                ImgUrl = image.ImgUrl,
-                DoctorName = doctor.FirstName + " " + doctor.LastName
-            };
+            viewModel.Image = editDoctorTranslator.ToImageViewModel(image, doctor);
 
             return View(viewModel);
         }
@@ -238,24 +195,37 @@ namespace DoctorsOffice.Controllers
                                         .Include(d => d.Image)
                                         .SingleOrDefault(d => d.ID == id);
             viewModel.Image.ID = doctorToUpdate.ImageID;
-           
-
+            var validImageTypes = new string[]
+           {
+                 "image/gif",
+                 "image/jpeg",
+                 "image/png"
+           };
+            ImageManipulation editImage = new ImageManipulation();
             if (ModelState.IsValid)
             {
-
-                if (viewModel.Image.ID == 1)
+                if (viewModel.Image.ImgUpload != null && viewModel.Image.ImgUpload.ContentLength > 0)
                 {
-                    Image image = new Image();
-                    EditImageUpload(viewModel.Image.ID, doctorToUpdate, image, viewModel);
-                    db.Images.Add(image);
-                }
-                else { 
-                    Image image = db.Images.Single(i => i.ID == doctorToUpdate.ImageID);
-                    image.ID = viewModel.Image.ID;
+                    if (!validImageTypes.Contains(viewModel.Image.ImgUpload.ContentType))
+                    {
+                        ModelState.AddModelError("ImgUpload", "Please, choose either GIF, JPG, or PNG type of files.");
+                    }
+                    if (viewModel.Image.ID == 1)
+                    {
+                        Image image = new Image();
+                        editImage.ImageUpload(doctorToUpdate, image, viewModel.Image.ImgUpload);
+                        //call for upload with file-system:
+                        //EditImageUpload(viewModel.Image.ID, doctorToUpdate, image, viewModel);
+                        db.Images.Add(image);
+                    }
+                    else
+                    {
+                        Image image = db.Images.Single(i => i.ID == doctorToUpdate.ImageID);
+                        image.ID = viewModel.Image.ID;
 
-                    EditImageUpload(viewModel.Image.ID, doctorToUpdate, image, viewModel);
+                        editImage.ImageUpload(doctorToUpdate, image, viewModel.Image.ImgUpload);
+                    }
                 }
-            
                 doctorToUpdate.FirstName = viewModel.Doctor.FirstName;
                 doctorToUpdate.LastName = viewModel.Doctor.LastName;
                 doctorToUpdate.Address = viewModel.Doctor.Address;
@@ -270,49 +240,50 @@ namespace DoctorsOffice.Controllers
             return View(viewModel);
         }
 
-        private void EditImageUpload(int? id, Doctor doctorToUpdate, Image image, DoctorEditViewModel viewModel)
-        {
-            ImageManipulation imageManipulationHelper = new ImageManipulation();
-            var validImageTypes = new string[]
-            {
-                 "image/gif",
-                 "image/jpeg",
-                 "image/png"
-            };
-            if (viewModel.Image.ImgUpload != null && viewModel.Image.ImgUpload.ContentLength > 0)
-            {
-                var imgFileName = Guid.NewGuid().ToString() + imageManipulationHelper.GetExtension(viewModel.Image.ImgUpload.ContentType);
+        //METHOD TO USE FOR UPLOAD IMAGE WITH FILE SYSTEM
+        //private void EditImageUpload(int? id, Doctor doctorToUpdate, Image image, DoctorEditViewModel viewModel)
+        //{
+        //    ImageManipulation imageManipulationHelper = new ImageManipulation();
+        //    var validImageTypes = new string[]
+        //    {
+        //         "image/gif",
+        //         "image/jpeg",
+        //         "image/png"
+        //    };
+        //    if (viewModel.Image.ImgUpload != null && viewModel.Image.ImgUpload.ContentLength > 0)
+        //    {
+        //        var imgFileName = Guid.NewGuid().ToString() + imageManipulationHelper.GetExtension(viewModel.Image.ImgUpload.ContentType);
                 
-                if (image.ImgUrl != "~/Img/doc-img-default.png") { 
-                    string fileToDelete = Server.MapPath(image.ImgUrl);
-                    if (System.IO.File.Exists(fileToDelete))
-                    {
-                        System.IO.File.Delete(fileToDelete);
-                    }
-                }
+        //        if (image.ImgUrl != "~/Img/doc-img-default.png") { 
+        //            string fileToDelete = Server.MapPath(image.ImgUrl);
+        //            if (System.IO.File.Exists(fileToDelete))
+        //            {
+        //                System.IO.File.Delete(fileToDelete);
+        //            }
+        //        }
 
-                if (!validImageTypes.Contains(viewModel.Image.ImgUpload.ContentType))
-                {
-                    ModelState.AddModelError("ImgUpload", "Please, choose either GIF, JPG, or PNG type of files.");
-                }
+        //        if (!validImageTypes.Contains(viewModel.Image.ImgUpload.ContentType))
+        //        {
+        //            ModelState.AddModelError("ImgUpload", "Please, choose either GIF, JPG, or PNG type of files.");
+        //        }
                
-                var uploadDir = "~/Uploads";
-                var imagePath = System.IO.Path.Combine(Server.MapPath(uploadDir), imgFileName);
-                var imageUrl = System.IO.Path.Combine(uploadDir, imgFileName);
-                viewModel.Image.ImgUpload.SaveAs(imagePath);
+        //        var uploadDir = "~/Uploads";
+        //        var imagePath = System.IO.Path.Combine(Server.MapPath(uploadDir), imgFileName);
+        //        var imageUrl = System.IO.Path.Combine(uploadDir, imgFileName);
+        //        viewModel.Image.ImgUpload.SaveAs(imagePath);
 
-                ImageResizer.ResizeSettings resizeSettings = new ImageResizer.ResizeSettings
-                {
-                    Width = 200,
-                    Height = 200
-                };
-                ImageResizer.ImageBuilder.Current.Build(imagePath, imagePath, resizeSettings);
+        //        ImageResizer.ResizeSettings resizeSettings = new ImageResizer.ResizeSettings
+        //        {
+        //            Width = 200,
+        //            Height = 200
+        //        };
+        //        ImageResizer.ImageBuilder.Current.Build(imagePath, imagePath, resizeSettings);
 
-                viewModel.Image.ImgUrl = imageUrl;
-                doctorToUpdate.Image = image;
-                image.ImgUrl = viewModel.Image.ImgUrl;
-            }
-        }
+        //        viewModel.Image.ImgUrl = imageUrl;
+        //        doctorToUpdate.Image = image;
+        //        image.ImgUrl = viewModel.Image.ImgUrl;
+        //    }
+        //}
 
         // GET: Doctors/Delete/5
         public ActionResult Delete(int? id)
@@ -324,11 +295,8 @@ namespace DoctorsOffice.Controllers
             }
             Doctor doctor = db.Doctors.Single(d => d.ID == id);
             Image image = db.Images.Single(i => i.ID == doctor.ImageID);
-            viewModel.Image = new ImageViewModel
-            {
-                ID = image.ID,
-                ImgUrl = image.ImgUrl
-            };
+            DoctorTranslator imageTranslator = new DoctorTranslator();
+            viewModel.Image = imageTranslator.ToImageViewModel(image);
 
             viewModel.DoctorName = doctor.FirstName + " " + doctor.LastName;
             if (doctor == null)
@@ -344,8 +312,10 @@ namespace DoctorsOffice.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Doctor doctor = db.Doctors.Find(id);
+            Doctor doctor = db.Doctors.Single(d => d.ID == id); ;
+            Image image = db.Images.Single(i => i.ID == doctor.ImageID);
             db.Doctors.Remove(doctor);
+            db.Images.Remove(image);
             db.SaveChanges();
             return RedirectToAction("Index");
 
@@ -364,7 +334,7 @@ namespace DoctorsOffice.Controllers
                                                        .Include(exam => exam.Patient);
            
             DoctorsExaminationListViewModel viewModel = new DoctorsExaminationListViewModel();
-
+            ExaminationTranslator examTranslator = new ExaminationTranslator();
             if(!string.IsNullOrEmpty(searchPatient))
             {
                 examinationQuery = examinationQuery
@@ -374,15 +344,7 @@ namespace DoctorsOffice.Controllers
 
             examinationQuery = examinationQuery.Where(exam => exam.DoctorID == doctorId);
             var singleDoctorExaminationQuery = examinationQuery
-                                .Select(exam => new DoctorsExaminationsViewModel()
-                                {
-                                    ID = exam.ID,
-                                    DoctorsID = exam.DoctorID,
-                                    PatientFirstName = exam.Patient.FirstName,
-                                    PatientLastName = exam.Patient.LastName,
-                                    ExamDate = exam.DateOfVisit,
-                                    Diagnose = exam.DiagnoseCode
-                                });
+                                .Select(examTranslator.ToDoctorsExaminationsViewModel);
 
             switch (sort)
             {

@@ -9,7 +9,15 @@
 <div>
 
     <hr />
-    <img src="@(Url.Content(Model.Image.ImgUrl))?w=200&h=200" class="float-right"/>
+    @Html.HiddenFor(model => model.Doctor.ID)
+    @if (Model.Image.ImgUrl != null)
+    {
+        <img src="@(Url.Content(Model.Image.ImgUrl))" class="col-md-2 float-md-right" />
+    }
+    @if (Model.Image.ImgUrl == null)
+    {
+        <img src="@Url.Action("GetImage", new { id = Model.Doctor.ImageID})" alt="Doctors photo" class="col-md-2 float-md-right" />
+    }
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Doctor.FirstName)

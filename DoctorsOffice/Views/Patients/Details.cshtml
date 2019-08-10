@@ -1,4 +1,4 @@
-﻿@model DoctorsOffice.Data.Patient
+﻿@model DoctorsOffice.ViewModels.PatientEditViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -15,7 +15,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PatientSocialSecurityNumber)
+            @Html.DisplayFor(model => model.PatientSocSecurityNum)
         </dd>
 
         <dt>
@@ -23,7 +23,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.LastName)
+            @Html.DisplayFor(model => model.FullName)
         </dd>
 
         <dt>
@@ -31,7 +31,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PersonalDoctor.LastName)
+            @Html.DisplayFor(model => model.DoctorsFullName)
         </dd>
 
         <dt>
@@ -71,7 +71,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Height)
+            @Html.DisplayFor(model => model.Height)cm
         </dd>
 
         <dt>
@@ -79,7 +79,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Weight)
+            @Html.DisplayFor(model => model.Weight)kg
         </dd>
 
         <dt>

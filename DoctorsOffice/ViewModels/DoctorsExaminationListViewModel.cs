@@ -17,7 +17,7 @@ namespace DoctorsOffice.ViewModels
         public string PatientFilter { get; set; }
         public string SortByDate { get; set; }
         public string SortByPatientName { get; set; }
-        public string CurrentSort { get; set; }
+        public string CurrentSort { get; set; }    
     }
 
     public class DoctorsExaminationsViewModel
@@ -30,5 +30,19 @@ namespace DoctorsOffice.ViewModels
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
         public DateTime ExamDate { get; set; }
         public string Diagnose { get; set; }
+        public string GetFullPatientName
+        {
+            get
+            {
+              return PatientFirstName + " " + PatientLastName;
+            }
+        }
+        public string DiagnoseShort
+        {
+            get
+            {
+                return Diagnose.Length > 20 ? Diagnose.Substring(0, 19) : Diagnose;   
+            }
+        }
     }
 }

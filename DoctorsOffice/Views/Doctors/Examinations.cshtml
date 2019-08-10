@@ -41,10 +41,10 @@
                     @Html.DisplayFor(modelItem => item.ExamDate)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.PatientFirstName) @Html.DisplayFor(modelItem => item.PatientLastName)
+                    @Html.DisplayFor(modelItem => item.GetFullPatientName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Diagnose)
+                    @Html.DisplayFor(modelItem => item.DiagnoseShort)
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", "Examinations", new { id = item.ID }, null) |

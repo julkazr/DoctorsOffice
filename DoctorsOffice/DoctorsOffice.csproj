@@ -193,6 +193,7 @@
     <Compile Include="Helpers\ImageManipulation.cs" />
     <Compile Include="Translators\DoctorTranslator.cs" />
     <Compile Include="Translators\ExaminationTranslator.cs" />
+    <Compile Include="Translators\PatientTranslator.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Data\BloodType.cs" />
     <Compile Include="Data\Doctor.cs" />

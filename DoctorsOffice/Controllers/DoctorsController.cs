@@ -373,7 +373,6 @@ namespace DoctorsOffice.Controllers
             viewModel.PatientFilter = searchPatient;
             viewModel.DoctorName = doctor.FirstName + " " + doctor.LastName;
             viewModel.DoctorID = doctorId;
-            
 
             return View("Examinations", viewModel);
         }

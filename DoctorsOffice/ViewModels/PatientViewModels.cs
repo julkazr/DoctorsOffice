@@ -56,13 +56,13 @@ namespace DoctorsOffice.ViewModels
         public double Weight { get; set; }
         public BloodType? BloodType { get; set; }
         public string PatientSocSecurityNum { get; set; }
-    }
-
-    public class PatientCreateViewModel
-    {
-        public PatientEditViewModel Patient { get; set; }
         public SelectList PersonalDoctorID { get; set; }
         public int SelectedDoctorID { get; set; }
+    }
+
+    public class PatientCreateViewModel: PatientEditViewModel
+    {
+        /*public PatientEditViewModel Patient { get; set; }*/
         public string HeightMetricUnit { get; set; }
         public string WeightMetricunit { get; set; }
     }

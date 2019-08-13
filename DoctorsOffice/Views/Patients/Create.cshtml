@@ -24,17 +24,17 @@
             <div class="form-group col-md-6 dark-text">
                 <label class="col-md-6">First Name</label>
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Patient.FirstName, new { htmlAttributes = new { @class = "form-control input-fields" } })
-                    @Html.ValidationMessageFor(model => model.Patient.FirstName, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control input-fields" } })
+                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group col-md-6 dark-text">
-                @Html.LabelFor(model => model.Patient.Height, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Height, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     <div class="d-flex flex-row justify-content-between">
-                        @Html.EditorFor(model => model.Patient.Height, new { htmlAttributes = new { @class = "form-control input-fields" } }) @Html.DisplayFor(model => model.HeightMetricUnit)
+                        @Html.EditorFor(model => model.Height, new { htmlAttributes = new { @class = "form-control input-fields" } }) @Html.DisplayFor(model => model.HeightMetricUnit)
                     </div>
-                    @Html.ValidationMessageFor(model => model.Patient.Height, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => model.Height, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
@@ -42,33 +42,33 @@
             <div class="form-group col-md-6 dark-text">
                 <label class="col-md-6">Last Name</label>
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Patient.LastName, new { htmlAttributes = new { @class = "form-control input-fields" } })
-                    @Html.ValidationMessageFor(model => model.Patient.LastName, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control input-fields" } })
+                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group col-md-6 dark-text">
-                @Html.LabelFor(model => model.Patient.Weight, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Weight, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     <div class="d-flex flex-row justify-content-between">
-                        @Html.EditorFor(model => model.Patient.Weight, new { htmlAttributes = new { @class = "form-control input-fields" } }) @Html.DisplayFor(model => model.WeightMetricunit)
+                        @Html.EditorFor(model => model.Weight, new { htmlAttributes = new { @class = "form-control input-fields" } }) @Html.DisplayFor(model => model.WeightMetricunit)
                     </div>
-                        @Html.ValidationMessageFor(model => model.Patient.Weight, "", new { @class = "text-danger" })
+                        @Html.ValidationMessageFor(model => model.Weight, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-md-6 col-md-6 dark-text">
-                @Html.LabelFor(model => model.Patient.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Patient.Address, new { htmlAttributes = new { @class = "form-control input-fields" } })
-                    @Html.ValidationMessageFor(model => model.Patient.Address, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control input-fields" } })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group col-md-6 dark-text">
-                @Html.LabelFor(model => model.Patient.BloodType, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.BloodType, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EnumDropDownListFor(model => model.Patient.BloodType, htmlAttributes: new { @class = "form-control input-fields" })
-                    @Html.ValidationMessageFor(model => model.Patient.BloodType, "", new { @class = "text-danger" })
+                    @Html.EnumDropDownListFor(model => model.BloodType, htmlAttributes: new { @class = "form-control input-fields" })
+                    @Html.ValidationMessageFor(model => model.BloodType, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
@@ -76,31 +76,31 @@
             <div class="form-group col-md-6 dark-text">
                 <label class="col-md-6">Phone number</label>
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Patient.PhoneNumber, new { htmlAttributes = new { @class = "form-control input-fields" } })
-                    @Html.ValidationMessageFor(model => model.Patient.PhoneNumber, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control input-fields" } })
+                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group col-md-6 dark-text">
-                @Html.LabelFor(model => model.Patient.DoctorsFullName, "Personal Doctor", htmlAttributes: new { @class = "control-label col-md-6" })
+                @Html.LabelFor(model => model.PersonalDoctorID, "Personal Doctor", htmlAttributes: new { @class = "control-label col-md-6" })
                 <div class="col-md-10">
-                    @Html.DropDownListFor(model => model.SelectedDoctorID, Model.PersonalDoctorID, "Please select",  new { @class = "form-control input-fields" })
-                    @Html.ValidationMessageFor(model => model.Patient.DoctorsFullName, "", new { @class = "text-danger" })
+                    @Html.DropDownListFor(model => model.SelectedDoctorID, Model.PersonalDoctorID, "Please select", new { @class = "form-control input-fields" })
+                    @Html.ValidationMessageFor(model => model.PersonalDoctorID, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-md-6 dark-text">
-                @Html.LabelFor(model => model.Patient.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Patient.Email, new { htmlAttributes = new { @class = "form-control input-fields" } })
-                    @Html.ValidationMessageFor(model => model.Patient.Email, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-fields" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                 </div>
             </div>
             <div class="form-group col-md-6 dark-text">
                 <label class="col-md-6">Social Security Number (or LBO)</label>
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Patient.PatientSocSecurityNum, new { htmlAttributes = new { @class = "form-control input-fields" } })
-                    @Html.ValidationMessageFor(model => model.Patient.PatientSocSecurityNum, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.PatientSocSecurityNum, new { htmlAttributes = new { @class = "form-control input-fields" } })
+                    @Html.ValidationMessageFor(model => model.PatientSocSecurityNum, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>      
@@ -108,8 +108,8 @@
             <div class="form-group col-md-6 dark-text">
                 <label class="col-md-6">Date of Birth</label>
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.Patient.DateOfBirth, new { htmlAttributes = new { @class = "form-control input-fields" } })
-                    @Html.ValidationMessageFor(model => model.Patient.DateOfBirth, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control input-fields" } })
+                    @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>

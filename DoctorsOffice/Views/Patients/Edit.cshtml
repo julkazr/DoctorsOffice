@@ -1,11 +1,11 @@
-﻿@model DoctorsOffice.Data.Patient
+﻿@model DoctorsOffice.ViewModels.PatientEditViewModel
 
 @{
     ViewBag.Title = "Edit";
 }
 
 <h2 class="dark-text">Change patient's info</h2>
-
+<h4 class="dark-text">@Model.FullName</h4>
 
 @using (Html.BeginForm())
 {
@@ -78,9 +78,9 @@
                     </div>
                 </div>
                 <div class="form-group col-md-6 dark-text">
-                    @Html.LabelFor(model => model.PersonalDoctorID, "PersonalDoctorID", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.PersonalDoctorID, "Personal Doctor", htmlAttributes: new { @class = "control-label col-md-6" })
                     <div class="col-md-10">
-                        @Html.DropDownList("PersonalDoctorID", null, htmlAttributes: new { @class = "form-control input-fields" })
+                        @Html.DropDownListFor(model => model.SelectedDoctorID, Model.PersonalDoctorID, Model.DoctorsFullName, new { @class = "form-control input-fields" })
                         @Html.ValidationMessageFor(model => model.PersonalDoctorID, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -94,10 +94,10 @@
                     </div>
                 </div>
                 <div class="form-group col-md-6 dark-text">
-                    @Html.LabelFor(model => model.PatientSocialSecurityNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.PatientSocSecurityNum, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.PatientSocialSecurityNumber, new { htmlAttributes = new { @class = "form-control input-fields" } })
-                        @Html.ValidationMessageFor(model => model.PatientSocialSecurityNumber, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => model.PatientSocSecurityNum, new { htmlAttributes = new { @class = "form-control input-fields" } })
+                        @Html.ValidationMessageFor(model => model.PatientSocSecurityNum, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>

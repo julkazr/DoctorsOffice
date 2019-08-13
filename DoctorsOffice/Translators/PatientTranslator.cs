@@ -49,18 +49,17 @@ namespace DoctorsOffice.Translators
         {
             var result = new Patient
             {
-                ID = viewModel.Patient.ID,
-                FirstName = viewModel.Patient.FirstName,
-                LastName = viewModel.Patient.LastName,
-                Address = viewModel.Patient.Address,
-                PhoneNumber = viewModel.Patient.PhoneNumber,
-                Email = viewModel.Patient.Email,
-                DateOfBirth = viewModel.Patient.DateOfBirth,
-                Height = viewModel.Patient.Height,
-                Weight = viewModel.Patient.Weight,
-                BloodType = viewModel.Patient.BloodType,
-                PatientSocialSecurityNumber = viewModel.Patient.PatientSocSecurityNum,
-                PersonalDoctorID = viewModel.SelectedDoctorID
+                ID = viewModel.ID,
+                FirstName = viewModel.FirstName,
+                LastName = viewModel.LastName,
+                Address = viewModel.Address,
+                PhoneNumber = viewModel.PhoneNumber,
+                Email = viewModel.Email,
+                DateOfBirth = viewModel.DateOfBirth,
+                Height = viewModel.Height,
+                Weight = viewModel.Weight,
+                BloodType = viewModel.BloodType,
+                PatientSocialSecurityNumber = viewModel.PatientSocSecurityNum
             };
             return result;
         }

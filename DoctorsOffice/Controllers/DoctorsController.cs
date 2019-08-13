@@ -159,7 +159,6 @@ namespace DoctorsOffice.Controllers
         // GET: Doctors/Edit/5
         public ActionResult Edit(int? id)
         {
-            //Doctor doctor = db.Doctors.Find(id);
             var doctor = db.Doctors
                             .Include(d => d.Image)
                             .SingleOrDefault(d => d.ID == id);

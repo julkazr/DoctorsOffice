@@ -117,18 +117,24 @@ namespace DoctorsOffice.Controllers
 
         // GET: Patients/Edit/5
         public ActionResult Edit(int? id)
+
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Patient patient = db.Patients.Find(id);
+            Patient patient = db.Patients
+                                .Include(p => p.PersonalDoctor)
+                                .SingleOrDefault(p => p.ID == id);
             if (patient == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.PersonalDoctorID = new SelectList(db.Doctors, "ID", "FirstName", patient.PersonalDoctorID);
-            return View(patient);
+            PatientTranslator patientEditTranslator = new PatientTranslator();
+            PatientEditViewModel viewModel = new PatientEditViewModel();
+            viewModel = patientEditTranslator.ToPatientEditViewModel(patient);
+            viewModel.PersonalDoctorID = new SelectList(db.Doctors, "ID", "FullName", patient.PersonalDoctorID);
+            return View(viewModel);
         }
 
         // POST: Patients/Edit/5
@@ -136,16 +142,27 @@ namespace DoctorsOffice.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,FirstName,LastName,Address,PhoneNumber,Email,PatientSocialSecurityNumber,DateOfBirth,Height,Weight,PersonalDoctorID,BloodType")] Patient patient)
+        public ActionResult Edit(int? id, PatientEditViewModel viewModel)
         {
+            Patient patientToUpdate = db.Patients.SingleOrDefault(p => p.ID == id);
             if (ModelState.IsValid)
             {
-                db.Entry(patient).State = EntityState.Modified;
+                patientToUpdate.FirstName = viewModel.FirstName;
+                patientToUpdate.LastName = viewModel.LastName;
+                patientToUpdate.PatientSocialSecurityNumber = viewModel.PatientSocSecurityNum;
+                patientToUpdate.PersonalDoctorID = viewModel.SelectedDoctorID;
+                patientToUpdate.Address = viewModel.Address;
+                patientToUpdate.PhoneNumber = viewModel.PhoneNumber;
+                patientToUpdate.Email = viewModel.Email;
+                patientToUpdate.DateOfBirth = viewModel.DateOfBirth;
+                patientToUpdate.BloodType = viewModel.BloodType;
+                patientToUpdate.Height = viewModel.Height;
+                patientToUpdate.Weight = viewModel.Weight;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.PersonalDoctorID = new SelectList(db.Doctors, "ID", "FirstName", patient.PersonalDoctorID);
-            return View(patient);
+            viewModel.PersonalDoctorID = new SelectList(db.Doctors, "ID", "FirstName", patientToUpdate.PersonalDoctorID);
+            return View(viewModel);
         }
 
         // GET: Patients/Delete/5

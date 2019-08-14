@@ -22,5 +22,19 @@ namespace DoctorsOffice.Translators
             };
             return result;
         }
+
+        public PatientExaminationsViewModel ToPatientsExaminationsViewModel (Examination exam)
+        {
+            var result = new PatientExaminationsViewModel()
+            {
+                ID = exam.ID,
+                PatientsID = exam.PatientID,
+                DoctorsFirstName = exam.Doctor.FirstName,
+                DoctorsLastName = exam.Doctor.LastName,
+                ExamDate = exam.DateOfVisit,
+                Diagnose = exam.DiagnoseCode
+            };
+            return result;
+        }
     }
 }

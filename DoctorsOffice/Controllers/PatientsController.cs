@@ -196,6 +196,48 @@ namespace DoctorsOffice.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult ExaminationList (int? patientId, string sort, string searchByDoctorName, int? page )
+        {
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+
+            Patient patient = db.Patients.SingleOrDefault(p => p.ID == patientId);
+
+            IQueryable<Examination> examinationsQuery = db.Examinations
+                                                            .Include(exam => exam.Doctor)
+                                                            .Include(exam => exam.Patient);
+            PatientExaminationsListViewModel viewModel = new PatientExaminationsListViewModel();
+            ExaminationTranslator patientExaminationTranslator = new ExaminationTranslator();
+            if(!string.IsNullOrEmpty(searchByDoctorName))
+            {
+                examinationsQuery = examinationsQuery
+                                    .Where(exam => exam.Doctor.FirstName.Contains(searchByDoctorName) || 
+                                                exam.Doctor.LastName.Contains(searchByDoctorName));
+            }
+
+            examinationsQuery = examinationsQuery.Where(exam => exam.PatientID == patientId);
+            var singlePatientExaminationQuery = examinationsQuery
+                                                .Select(patientExaminationTranslator.ToPatientsExaminationsViewModel);
+
+            switch (sort)
+            {
+                case "date_asc":
+                    singlePatientExaminationQuery = singlePatientExaminationQuery.OrderBy(exam => exam.ExamDate);
+                    break;
+                default:
+                    singlePatientExaminationQuery = singlePatientExaminationQuery.OrderByDescending(exam => exam.ExamDate);
+                    break;
+            }
+
+            viewModel.Examinations = singlePatientExaminationQuery.ToPagedList(pageNumber, pageSize);
+            viewModel.PatientFirstName = patient.FirstName;
+            viewModel.PatientLastName = patient.LastName;
+            viewModel.SortByDate = string.IsNullOrEmpty(sort) ? "date_asc" : "";
+            viewModel.CurrentSort = sort;
+            viewModel.DoctorNameFilter = searchByDoctorName;
+            return View("ExaminationList", viewModel);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

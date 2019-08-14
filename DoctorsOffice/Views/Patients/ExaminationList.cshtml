@@ -1,0 +1,56 @@
+﻿@model DoctorsOffice.ViewModels.PatientExaminationsListViewModel
+@using PagedList;
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "ExaminationList";
+}
+
+<h2>Examinations</h2>
+
+<p class="dark-text">
+    Examinations for patient: <br />
+    <strong>@Model.GetPatientsName</strong>
+</p>
+
+<hr />
+<p class="text-bold dark-text">
+    @Html.ActionLink("Create new Examination", "Create", "Examinations")
+</p>
+@using(Html.BeginForm("ExaminationList", "Patients", new { doctorId = Model.DoctorID}, FormMethod.Get))
+{
+<div class="row">
+    <p class="col-lg-9 form-inline dark-text text-bold">
+        Find examination by doctors name:
+        @Html.TextBox("searchByDoctorName", Model.DoctorNameFilter as string, new { @class = "form-control ml-2 input-fields" })
+        <button type="submit" class="btn btn-default ml-2 dark-blue-bckg light-text">Search</button>
+    </p>
+</div>
+}
+
+<table class="table table-bcg dark-text">
+    <tr>
+        <th>@Html.ActionLink("Examination date", "ExaminationList", new { sort = Model.SortByDate, searchByDoctorName = Model.DoctorNameFilter, doctorId = Model.DoctorID, page = 1 } )</th>
+        <th>@Html.ActionLink("Doctor name", "ExaminationList", new { sort = Model.SortByDate, searchByDoctorName = Model.DoctorNameFilter, doctorId = Model.DoctorID, Page = 1 } )</th>
+        <th>Diagnose</th>
+        <th></th>
+    </tr>
+    @foreach(var item in Model.Examinations)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.ExamDate)</td>
+            <td>@Html.DisplayFor(modelItem => item.GetFullDoctorsName)</td>
+            <td>@Html.DisplayFor(modelItem => item.DiagnoseShort)</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", "Examinations", new { id = item.ID}, null) | 
+                @Html.ActionLink("Back to Patients", "Index")
+            </td>
+        </tr>
+    }
+</table>
+<br />
+
+Page @(Model.Examinations.PageCount < Model.Examinations.PageNumber ? 0 : Model.Examinations.PageNumber) of @Model.Examinations.PageCount
+@Html.PagedListPager(Model.Examinations, page => Url.Action("ExaminationList",
+                      new { page, sort = Model.CurrentSort, searchByDoctorName = Model.DoctorNameFilter, doctorid = Model.DoctorID}))
+

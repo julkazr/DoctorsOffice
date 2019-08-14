@@ -326,7 +326,7 @@ namespace DoctorsOffice.Controllers
             int pageSize = 2;
             int pageNumber = (page ?? 1);
             
-            Doctor doctor = db.Doctors.Find(doctorId);
+            Doctor doctor = db.Doctors.SingleOrDefault(d => d.ID == doctorId);
             
             IQueryable<Examination> examinationQuery = db.Examinations
                                                        .Include(exam => exam.Doctor)

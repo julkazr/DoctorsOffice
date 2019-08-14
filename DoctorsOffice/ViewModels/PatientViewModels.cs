@@ -112,17 +112,20 @@ namespace DoctorsOffice.ViewModels
         }
     }
 
-    public class PatientExaminationsList
+    public class PatientExaminationsListViewModel
     {
         public IPagedList<PatientExaminationsViewModel> Examinations { get; set; }
-        public string DoctorFirstName { get; set; }
-        public string DoctorLastName { get; set; }
+        public string PatientFirstName { get; set; }
+        public string PatientLastName { get; set; }
+        public string CurrentSort { get; set; }
+        public string SortByDate { get; set; }
+        public string DoctorNameFilter { get; set; }
         public int? DoctorID { get; set; }
-        public string GetDoctorName
+        public string GetPatientsName
         {
             get
             {
-                return DoctorFirstName + " " + DoctorLastName;
+                return PatientFirstName + " " + PatientLastName;
             }
         }
     }

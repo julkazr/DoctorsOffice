@@ -1,4 +1,4 @@
-﻿@model DoctorsOffice.Data.Examination
+﻿@model DoctorsOffice.ViewModels.ExaminationCRUViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -15,7 +15,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Patient.LastName)
+            @Html.DisplayFor(model => model.GetFullPatientsName)
         </dd>
 
         <dt>
@@ -23,7 +23,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Doctor.LastName)
+            @Html.DisplayFor(model => model.GetFullDoctorsName)
         </dd>
 
         <dt>
@@ -31,7 +31,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.DateOfVisit)
+            @Html.DisplayFor(model => model.ExamDate)
         </dd>
 
         <dt>
@@ -39,7 +39,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.DiagnoseCode)
+            @Html.DisplayFor(model => model.Diagnose)
         </dd>
 
         <dt>
@@ -47,7 +47,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.LabResults)
+            @Html.DisplayFor(model => model.LabResult)
         </dd>
 
         <dt>
@@ -55,13 +55,13 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ExamResults)
+            @Html.DisplayFor(model => model.ExamResult)
         </dd>
 
     </dl>
 </div>
 <p class="dark-text text-bold">
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ExaminationID }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
 <p class="dark-text">*For printing of this examination go to edit form.</p>

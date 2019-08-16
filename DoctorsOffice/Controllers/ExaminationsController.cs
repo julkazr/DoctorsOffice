@@ -6,8 +6,11 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 using DoctorsOffice.Data;
 using DoctorsOffice.DbContexts;
+using DoctorsOffice.ViewModels;
+using DoctorsOffice.Translators;
 
 namespace DoctorsOffice.Controllers
 {
@@ -16,10 +19,49 @@ namespace DoctorsOffice.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Examinations
-        public ActionResult Index()
+        public ActionResult Index(string sort, string searchByPatientName, string searchByDoctorName, int? page)
         {
-            var examinations = db.Examinations.Include(e => e.Doctor).Include(e => e.Patient);
-            return View(examinations.ToList());
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+            ExaminationListViewModel viewModel = new ExaminationListViewModel();
+            IQueryable<Examination> examinationsQuery = db.Examinations
+                                                            .Include(exam => exam.Doctor)
+                                                            .Include(exam => exam.Patient);
+
+            if(!string.IsNullOrEmpty(searchByDoctorName))
+            {
+                examinationsQuery = examinationsQuery
+                                    .Where(exam => exam.Doctor.FirstName.Contains(searchByDoctorName) || 
+                                            exam.Doctor.LastName.Contains(searchByDoctorName));
+            }
+            if (!string.IsNullOrEmpty(searchByPatientName))
+            {
+                examinationsQuery = examinationsQuery
+                                    .Where(exam => exam.Patient.FirstName.Contains(searchByPatientName) ||
+                                            exam.Patient.LastName.Contains(searchByPatientName));
+            }
+
+            switch (sort)
+            {
+                case "date_asc":
+                    examinationsQuery = examinationsQuery.OrderBy(exam => exam.DateOfVisit);
+                    break;
+                default:
+                    examinationsQuery = examinationsQuery.OrderByDescending(exam => exam.DateOfVisit);
+                    break;
+            }
+
+            ExaminationTranslator examTranslator = new ExaminationTranslator();
+            viewModel.Examinations = examinationsQuery
+                                        .Select(examTranslator.ToViewList)
+                                        .ToPagedList(pageNumber, pageSize);
+
+            viewModel.CurrentSort = sort;
+            viewModel.SortByDate = string.IsNullOrEmpty(sort) ? "date_asc" : "";
+            viewModel.DoctorNameFilter = searchByDoctorName;
+            viewModel.PatientNameFilter = searchByPatientName;
+
+            return View(viewModel);
         }
 
         // GET: Examinations/Details/5
@@ -29,12 +71,16 @@ namespace DoctorsOffice.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Examination examination = db.Examinations.Find(id);
+            Examination examination = db.Examinations.SingleOrDefault(exam => exam.ID == id);
             if (examination == null)
             {
                 return HttpNotFound();
             }
-            return View(examination);
+
+            ExaminationTranslator examinationDetailsTranslator = new ExaminationTranslator();
+            ExaminationCRUViewModel viewModel = examinationDetailsTranslator.ToCRUViewModel(examination);
+
+            return View(viewModel);
         }
 
         // GET: Examinations/Create
@@ -106,12 +152,15 @@ namespace DoctorsOffice.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Examination examination = db.Examinations.Find(id);
+            Examination examination = db.Examinations.SingleOrDefault(exam => exam.ID == id);
             if (examination == null)
             {
                 return HttpNotFound();
             }
-            return View(examination);
+            ExaminationTranslator examDeleteTranslator = new ExaminationTranslator();
+            ExaminationDeleteViewModel viewModel = examDeleteTranslator.ToExamDeleteViewModel(examination);
+
+            return View(viewModel);
         }
 
         // POST: Examinations/Delete/5
@@ -119,7 +168,7 @@ namespace DoctorsOffice.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Examination examination = db.Examinations.Find(id);
+            Examination examination = db.Examinations.SingleOrDefault(exam => exam.ID == id);
             db.Examinations.Remove(examination);
             db.SaveChanges();
             return RedirectToAction("Index");

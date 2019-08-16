@@ -27,7 +27,7 @@ namespace DoctorsOffice.ViewModels
         public string PatientFirstName { get; set; }
         public string PatientLastName { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime ExamDate { get; set; }
         public string Diagnose { get; set; }
         public string GetFullPatientName

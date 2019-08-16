@@ -204,6 +204,7 @@
     <Compile Include="ViewModels\DoctorEditViewModel.cs" />
     <Compile Include="ViewModels\DoctorListViewModel.cs" />
     <Compile Include="ViewModels\DoctorsExaminationListViewModel.cs" />
+    <Compile Include="ViewModels\ExaminationViewModels.cs" />
     <Compile Include="ViewModels\ManageViewModels.cs" />
     <Compile Include="Data\Patient.cs" />
     <Compile Include="Data\PersonInfo.cs" />

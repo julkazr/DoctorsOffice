@@ -1,5 +1,7 @@
-﻿@model IEnumerable<DoctorsOffice.Data.Examination>
-
+﻿@model DoctorsOffice.ViewModels.ExaminationListViewModel
+@using PagedList;
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Index";
 }
@@ -9,6 +11,22 @@
 <p class="dark-text text-bold">
     @Html.ActionLink("Create New", "Create")
 </p>
+@using (Html.BeginForm("Index", "Examinations", FormMethod.Get))
+{
+    <div class="row">
+        <p class="col-lg-6 form-inline dark-text text-bold">
+            Find examination by doctors name:
+            @Html.TextBox("searchByDoctorName", Model.DoctorNameFilter as string, new { @class = "form-control ml-2 input-fields" })
+            <button type="submit" class="btn btn-default ml-2 dark-blue-bckg light-text">Search</button>
+        </p>
+        <p class="col-lg-6 form-inline dark-text text-bold">
+            Find examination by patients name:
+            @Html.TextBox("searchByPatientName", Model.PatientNameFilter as string, new { @class = "form-control ml-2 input-fields" })
+            <button type="submit" class="btn btn-default ml-2 dark-blue-bckg light-text">Search</button>
+        </p>
+    </div>
+}
+
 <table class="table table-bcg dark-text">
     <tr class="dark-text">
         <th>
@@ -18,34 +36,42 @@
             Doctor
         </th>
         <th>
-            Date of Examination
+            @Html.ActionLink("Date", "Index", new { sort = Model.SortByDate, searchByDoctorName = Model.DoctorNameFilter, searchByPatientName = Model.PatientNameFilter, page = 1 })
         </th>
         <th>
-            Diagnose (code)
+            Diagnose
         </th>
-       <th></th>
+        <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Patient.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Doctor.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateOfVisit)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DiagnoseCode)
-        </td>
-        <td class="text-bold">
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model.Examinations)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.GetFullPatientsName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.GetFullDoctorsName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExamDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DiagnoseShort)
+            </td>
+            <td class="text-bold">
+                @Html.ActionLink("Edit", "Edit", new { id = item.ExaminationID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ExaminationID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ExaminationID })
+            </td>
+        </tr>
+    }
 
 </table>
+
+Page @(Model.Examinations.PageCount < Model.Examinations.PageNumber ? 0 : Model.Examinations.PageNumber) of @Model.Examinations.PageCount
+@Html.PagedListPager(Model.Examinations, page => Url.Action("Index",
+                                                            new { page,
+                                                                sort = Model.CurrentSort,
+                                                                searchByDoctorName = Model.DoctorNameFilter,
+                                                                searchByPatientName = Model.PatientNameFilter}))

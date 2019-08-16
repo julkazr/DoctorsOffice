@@ -1,4 +1,4 @@
-﻿@model DoctorsOffice.Data.Examination
+﻿@model DoctorsOffice.ViewModels.ExaminationDeleteViewModel
 
 @{
     ViewBag.Title = "Delete";
@@ -16,15 +16,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Patient.LastName)
-        </dd>
-
-        <dt>
-            Doctor
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Doctor.LastName)
+            @Html.DisplayFor(model => model.GetFullPatientsName)
         </dd>
 
         <dt>
@@ -32,7 +24,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.DateOfVisit)
+            @Html.DisplayFor(model => model.ExamDate)
         </dd>
 
         <dt>
@@ -40,23 +32,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.DiagnoseCode)
-        </dd>
-
-        <dt>
-            Lab Results
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.LabResults)
-        </dd>
-
-        <dt>
-            Examination Results
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ExamResults)
+            @Html.DisplayFor(model => model.Diagnose)
         </dd>
 
     </dl>

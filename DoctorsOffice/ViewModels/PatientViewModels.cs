@@ -50,7 +50,7 @@ namespace DoctorsOffice.ViewModels
     {
         public string Address { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime DateOfBirth { get; set; }
         public double Height { get; set; }
         public double Weight { get; set; }
@@ -93,7 +93,7 @@ namespace DoctorsOffice.ViewModels
         public string DoctorsFirstName { get; set; }
         public string DoctorsLastName { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd-MM-yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
         public DateTime ExamDate { get; set; }
         public string Diagnose { get; set; }
         public string GetFullDoctorsName

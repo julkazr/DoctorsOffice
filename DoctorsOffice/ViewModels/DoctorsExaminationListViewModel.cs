@@ -23,7 +23,7 @@ namespace DoctorsOffice.ViewModels
     public class DoctorsExaminationsViewModel
     {
         public int ID { get; set; }
-        public int DoctorsID { get; set; }
+        public int? DoctorsID { get; set; }
         public string PatientFirstName { get; set; }
         public string PatientLastName { get; set; }
         [DataType(DataType.Date)]

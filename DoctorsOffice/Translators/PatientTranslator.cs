@@ -26,24 +26,48 @@ namespace DoctorsOffice.Translators
 
         public PatientEditViewModel ToPatientEditViewModel(Patient patient)
         {
-            var result = new PatientEditViewModel
+            PatientEditViewModel result;
+            if(patient.PersonalDoctor != null)
             {
-                ID = patient.ID,
-                FirstName = patient.FirstName,
-                LastName = patient.LastName,
-                DoctorFirstName = patient.PersonalDoctor.FirstName,
-                DoctorLastName = patient.PersonalDoctor.LastName,
-                PhoneNumber = patient.PhoneNumber,
-                Email = patient.Email,
-                Address = patient.Address,
-                DateOfBirth = patient.DateOfBirth,
-                Height = patient.Height,
-                Weight = patient.Weight,
-                BloodType = patient.BloodType,
-                PatientSocSecurityNum = patient.PatientSocialSecurityNumber
-            };
+                result = new PatientEditViewModel
+                {
+                    ID = patient.ID,
+                    FirstName = patient.FirstName,
+                    LastName = patient.LastName,
+                    DoctorFirstName = patient.PersonalDoctor.FirstName,
+                    DoctorLastName = patient.PersonalDoctor.LastName,
+                    PhoneNumber = patient.PhoneNumber,
+                    Email = patient.Email,
+                    Address = patient.Address,
+                    DateOfBirth = patient.DateOfBirth,
+                    Height = patient.Height,
+                    Weight = patient.Weight,
+                    BloodType = patient.BloodType,
+                    PatientSocSecurityNum = patient.PatientSocialSecurityNumber
+                };
+            }
+            else
+            {
+                result = new PatientEditViewModel
+                {
+                    ID = patient.ID,
+                    FirstName = patient.FirstName,
+                    LastName = patient.LastName,
+                    PhoneNumber = patient.PhoneNumber,
+                    Email = patient.Email,
+                    Address = patient.Address,
+                    DateOfBirth = patient.DateOfBirth,
+                    Height = patient.Height,
+                    Weight = patient.Weight,
+                    BloodType = patient.BloodType,
+                    PatientSocSecurityNum = patient.PatientSocialSecurityNumber
+                };
+            }
+            
             return result;
         }
+
+        
 
         public Patient ToPatientDataModel (PatientCreateViewModel viewModel)
         {

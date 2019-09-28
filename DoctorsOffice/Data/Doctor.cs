@@ -13,6 +13,6 @@ namespace DoctorsOffice.Data
         public int ImageID { get; set; }
 
         public virtual ICollection<Examination> Examinations { get; set; }
-        public virtual Image Image { get; set; }
+        public virtual File Image { get; set; }
     }
 }

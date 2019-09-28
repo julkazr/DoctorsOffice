@@ -89,11 +89,11 @@ namespace DoctorsOffice.ViewModels
     public class PatientExaminationsViewModel
     {
         public int ID { get; set; }
-        public int PatientsID { get; set; }
+        public int? PatientsID { get; set; }
         public string DoctorsFirstName { get; set; }
         public string DoctorsLastName { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:MM-dd-yyyy}")]
         public DateTime ExamDate { get; set; }
         public string Diagnose { get; set; }
         public string GetFullDoctorsName

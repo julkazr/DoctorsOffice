@@ -12,12 +12,12 @@ namespace DoctorsOffice.DbContexts
         
         protected override void Seed(ApplicationDbContext context)
         {
-            var image = new Image
+            var image = new File
             {
                 ID = 1,
-                ImgUrl = "~/Img/doc-img-default.png"
+                FileUrl = "~/Img/doc-img-default.png"
             };
-            context.Images.Add(image);
+            context.Files.Add(image);
             context.SaveChanges();
 
             var doctors = new List<Doctor>
@@ -128,11 +128,11 @@ namespace DoctorsOffice.DbContexts
             {
                 new Examination
                 {
-                    DateOfVisit = DateTime.Parse("12-05-2018"),
-                    //PatientID = patients.Single(p => p.LastName == "Garcia").ID,
-                    //DoctorID = doctors.Single(d => d.LastName == "Goldstein").ID,
-                    Patient = patients.Single(p => p.LastName == "Garcia"),
-                    Doctor = doctors.Single(d => d.LastName == "Goldstein"),
+                    DateOfVisit = DateTime.Parse("05-12-2018"),
+                    PatientID = patients.Single(p => p.LastName == "Garcia").ID,
+                    DoctorID = doctors.Single(d => d.LastName == "Goldstein").ID,
+                    //ExamPatient = patients.Single(p => p.LastName == "Garcia"),
+                    //ExamDoctor = doctors.Single(d => d.LastName == "Goldstein"),
                     DiagnoseCode = "nose reconstruction",
                     ExamResults = "Preoperation examination. All results ok."
                 },

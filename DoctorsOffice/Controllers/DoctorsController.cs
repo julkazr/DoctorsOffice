@@ -87,7 +87,7 @@ namespace DoctorsOffice.Controllers
             DoctorTranslator doctorTranslator = new DoctorTranslator();
             viewModel.Doctor = doctorTranslator.ToDoctorViewModel(doctor);
 
-            Image image = db.Images.Single(i => i.ID == doctor.ImageID);
+            File image = db.Files.Single(i => i.ID == doctor.ImageID);
             viewModel.Image = doctorTranslator.ToImageViewModel(image, doctor);
 
             return View(viewModel);
@@ -107,24 +107,25 @@ namespace DoctorsOffice.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(DoctorCreateViewModel viewModel)
         {
-            
+
             var validImageTypes = new string[]
             {
                 "image/gif",
                 "image/jpeg",
                 "image/png"
             };
-            
+
             if (ModelState.IsValid)
             {
-                var image = new Image
+                var image = new File
                 {
                     ID = viewModel.Image.ID,
                     ContentType = viewModel.Image.ImgUpload.ContentType
                 };
                 DoctorTranslator doctorDataTranslator = new DoctorTranslator();
                 Doctor doctor = doctorDataTranslator.ToDoctorDataModel(viewModel, image);
-                ImageManipulation imageUploadHelper = new ImageManipulation();
+                FileManipulation imageUploadHelper = new FileManipulation();
+                
                 if (viewModel.Image.ImgUpload != null && viewModel.Image.ImgUpload.ContentLength > 0)
                 {
                     if (!validImageTypes.Contains(viewModel.Image.ImgUpload.ContentType))
@@ -138,9 +139,9 @@ namespace DoctorsOffice.Controllers
                     //var imageUrl = System.IO.Path.Combine(uploadDir, imgFileName);
                     //viewModel.Image.ImgUpload.SaveAs(imagePath);
                     
-                    imageUploadHelper.ImageUpload(doctor, image, viewModel.Image.ImgUpload);
+                    imageUploadHelper.FileUpload(image, viewModel.Image.ImgUpload);
                     //imageUploadHelper.ResizeImage(viewModel.Image.ImgUpload);-don't work yet!!!
-                    db.Images.Add(image);
+                    //db.Files.Add(image);
                 }
                 else
                 {
@@ -170,7 +171,7 @@ namespace DoctorsOffice.Controllers
             viewModel.Doctor = editDoctorTranslator.ToDoctorViewModel(doctor);
 
 
-            Image image = db.Images.Single(i => i.ID == doctor.ImageID);
+            File image = db.Files.Single(i => i.ID == doctor.ImageID);
             viewModel.Image = editDoctorTranslator.ToImageViewModel(image, doctor);
 
             return View(viewModel);
@@ -178,7 +179,7 @@ namespace DoctorsOffice.Controllers
 
         public ActionResult GetImage(int id)
         {
-            Image image = db.Images.Single(i => i.ID == id);
+            File image = db.Files.Single(i => i.ID == id);
             return File(image.Content, image.ContentType);
         }
 
@@ -200,7 +201,7 @@ namespace DoctorsOffice.Controllers
                  "image/jpeg",
                  "image/png"
            };
-            ImageManipulation editImage = new ImageManipulation();
+            FileManipulation editImage = new FileManipulation();
             if (ModelState.IsValid)
             {
                 if (viewModel.Image.ImgUpload != null && viewModel.Image.ImgUpload.ContentLength > 0)
@@ -211,18 +212,22 @@ namespace DoctorsOffice.Controllers
                     }
                     if (viewModel.Image.ID == 1)
                     {
-                        Image image = new Image();
-                        editImage.ImageUpload(doctorToUpdate, image, viewModel.Image.ImgUpload);
+                        File image = new File
+                        {
+                            ID = viewModel.Image.ID,
+                            ContentType = viewModel.Image.ImgUpload.ContentType
+                        };
+                        editImage.FileUpload(image, viewModel.Image.ImgUpload);
                         //call for upload with file-system:
                         //EditImageUpload(viewModel.Image.ID, doctorToUpdate, image, viewModel);
-                        db.Images.Add(image);
+                        db.Files.Add(image);
                     }
                     else
                     {
-                        Image image = db.Images.Single(i => i.ID == doctorToUpdate.ImageID);
+                        File image = db.Files.Single(i => i.ID == doctorToUpdate.ImageID);
                         image.ID = viewModel.Image.ID;
 
-                        editImage.ImageUpload(doctorToUpdate, image, viewModel.Image.ImgUpload);
+                        editImage.FileUpload(image, viewModel.Image.ImgUpload);
                     }
                 }
                 doctorToUpdate.FirstName = viewModel.Doctor.FirstName;
@@ -293,7 +298,7 @@ namespace DoctorsOffice.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Doctor doctor = db.Doctors.Single(d => d.ID == id);
-            Image image = db.Images.Single(i => i.ID == doctor.ImageID);
+            File image = db.Files.Single(i => i.ID == doctor.ImageID);
             DoctorTranslator imageTranslator = new DoctorTranslator();
             viewModel.Image = imageTranslator.ToImageViewModel(image);
 
@@ -312,9 +317,9 @@ namespace DoctorsOffice.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Doctor doctor = db.Doctors.Single(d => d.ID == id); ;
-            Image image = db.Images.Single(i => i.ID == doctor.ImageID);
+            File image = db.Files.Single(i => i.ID == doctor.ImageID);
             db.Doctors.Remove(doctor);
-            db.Images.Remove(image);
+            db.Files.Remove(image);
             db.SaveChanges();
             return RedirectToAction("Index");
 

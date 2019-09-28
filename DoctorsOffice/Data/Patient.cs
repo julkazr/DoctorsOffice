@@ -16,10 +16,9 @@ namespace DoctorsOffice.Data
         public double Height { get; set; }
         public double Weight { get; set; }
         public int? PersonalDoctorID { get; set; }
+        public BloodType? BloodType { get; set; }
 
         public virtual Doctor PersonalDoctor { get; set; }
-        public virtual ICollection<Examination> Examinations { get; set; }
-
-        public BloodType? BloodType { get; set; }
+        public virtual ICollection<Examination> Examinations { get; set; }  
     }
 }

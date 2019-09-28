@@ -184,13 +184,13 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PatientsController.cs" />
-    <Compile Include="Data\Image.cs" />
+    <Compile Include="Data\File.cs" />
     <Compile Include="DbContexts\ApplicationDbContext.cs" />
     <Compile Include="DbContexts\DBInitializer.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\ImageManipulation.cs" />
+    <Compile Include="Helpers\FileManipulation.cs" />
     <Compile Include="Translators\DoctorTranslator.cs" />
     <Compile Include="Translators\ExaminationTranslator.cs" />
     <Compile Include="Translators\PatientTranslator.cs" />

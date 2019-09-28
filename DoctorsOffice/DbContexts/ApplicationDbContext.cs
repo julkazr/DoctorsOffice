@@ -15,7 +15,7 @@ namespace DoctorsOffice.DbContexts
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Examination> Examinations { get; set; }
-        public DbSet<Image> Images { get; set; }
+        public DbSet<File> Files { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
@@ -38,16 +38,19 @@ namespace DoctorsOffice.DbContexts
                 .WithMany();
             modelBuilder.Entity<Patient>().ToTable("Patients")
                 .HasMany(p => p.Examinations);
+            modelBuilder.Entity<Patient>()
+                .HasOptional(p => p.PersonalDoctor)
+                .WithMany();
             modelBuilder.Entity<Examination>()
-                .HasRequired(p => p.Patient)
+                .HasOptional(p => p.Patient)
                 .WithMany()
-                .HasForeignKey(e => e.PatientID)
                 .WillCascadeOnDelete(false);
             modelBuilder.Entity<Examination>()
-                .HasRequired(d => d.Doctor)
+                .HasOptional(d => d.Doctor)
                 .WithMany()
-                .HasForeignKey(e => e.DoctorID)
                 .WillCascadeOnDelete(false);
+            modelBuilder.Entity<Examination>()
+                .HasMany(e => e.Files);
         }
     }
 }

@@ -15,12 +15,12 @@
 {
     <div class="row">
         <p class="col-lg-6 form-inline dark-text text-bold">
-            Find examination by doctors name:
+            Find examination by doctor:
             @Html.TextBox("searchByDoctorName", Model.DoctorNameFilter as string, new { @class = "form-control ml-2 input-fields" })
             <button type="submit" class="btn btn-default ml-2 dark-blue-bckg light-text">Search</button>
         </p>
         <p class="col-lg-6 form-inline dark-text text-bold">
-            Find examination by patients name:
+            Find examination by patient:
             @Html.TextBox("searchByPatientName", Model.PatientNameFilter as string, new { @class = "form-control ml-2 input-fields" })
             <button type="submit" class="btn btn-default ml-2 dark-blue-bckg light-text">Search</button>
         </p>

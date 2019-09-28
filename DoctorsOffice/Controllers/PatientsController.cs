@@ -106,6 +106,9 @@ namespace DoctorsOffice.Controllers
             if (ModelState.IsValid)
             {
                 
+                    patient.PersonalDoctorID = viewModel.SelectedDoctorID;
+                
+                
                 db.Patients.Add(patient);
                 db.SaveChanges();
                 return RedirectToAction("Index");

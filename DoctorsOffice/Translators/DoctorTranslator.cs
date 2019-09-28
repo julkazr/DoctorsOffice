@@ -39,27 +39,27 @@ namespace DoctorsOffice.Translators
             return result;
         }
 
-        public ImageViewModel ToImageViewModel(Image image, Doctor doctor)
+        public ImageViewModel ToImageViewModel(File image, Doctor doctor)
         {
             var result = new ImageViewModel
             {
                 ID = image.ID,
-                ImgUrl = image.ImgUrl,
+                ImgUrl = image.FileUrl,
                 DoctorName = doctor.FirstName + " " + doctor.LastName
             };
             return result;
         }
-        public ImageViewModel ToImageViewModel(Image image)
+        public ImageViewModel ToImageViewModel(File image)
         {
             var result = new ImageViewModel
             {
                 ID = image.ID,
-                ImgUrl = image.ImgUrl
+                ImgUrl = image.FileUrl
             };
             return result;
         }
 
-        public Doctor ToDoctorDataModel(DoctorCreateViewModel viewModel, Image image)
+        public Doctor ToDoctorDataModel(DoctorCreateViewModel viewModel, File image)
         {
             var result = new Doctor
             {

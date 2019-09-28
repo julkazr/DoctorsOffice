@@ -7,7 +7,7 @@
 <h2 class="dark-text">Create new patient</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Patients", FormMethod.Post)) 
 {
     @Html.AntiForgeryToken()
     

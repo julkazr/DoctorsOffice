@@ -9,7 +9,7 @@ namespace DoctorsOffice.Translators
 {
     public class ExaminationTranslator
     {
-        public ExaminationViewModel ToViewList (Examination exam)
+        public ExaminationViewModel ToViewListModel (Examination exam)
         {
             var result = new ExaminationViewModel()
             {
@@ -37,6 +37,20 @@ namespace DoctorsOffice.Translators
                 Diagnose = exam.DiagnoseCode,
                 LabResult = exam.LabResults,
                 ExamResult = exam.ExamResults
+            };
+            return result;
+        }
+
+        public Examination ToExaminationDataModel (ExaminationCRUViewModel viewModel, ICollection<File> files)
+        {
+            var result = new Examination
+            {
+                ID = viewModel.ExaminationID,
+                DateOfVisit = viewModel.ExamDate,
+                DiagnoseCode = viewModel.Diagnose,
+                LabResults = viewModel.LabResult,
+                ExamResults = viewModel.ExamResult,
+                Files = files
             };
             return result;
         }

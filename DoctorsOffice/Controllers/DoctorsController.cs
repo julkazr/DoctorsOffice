@@ -201,11 +201,13 @@ namespace DoctorsOffice.Controllers
                  "image/jpeg",
                  "image/png"
            };
+            
             FileManipulation editImage = new FileManipulation();
             if (ModelState.IsValid)
             {
                 if (viewModel.Image.ImgUpload != null && viewModel.Image.ImgUpload.ContentLength > 0)
                 {
+                    
                     if (!validImageTypes.Contains(viewModel.Image.ImgUpload.ContentType))
                     {
                         ModelState.AddModelError("ImgUpload", "Please, choose either GIF, JPG, or PNG type of files.");
@@ -214,20 +216,20 @@ namespace DoctorsOffice.Controllers
                     {
                         File image = new File
                         {
-                            ID = viewModel.Image.ID,
                             ContentType = viewModel.Image.ImgUpload.ContentType
                         };
                         editImage.FileUpload(image, viewModel.Image.ImgUpload);
                         //call for upload with file-system:
                         //EditImageUpload(viewModel.Image.ID, doctorToUpdate, image, viewModel);
                         db.Files.Add(image);
+                        doctorToUpdate.Image = image;
                     }
                     else
                     {
                         File image = db.Files.Single(i => i.ID == doctorToUpdate.ImageID);
-                        image.ID = viewModel.Image.ID;
 
                         editImage.FileUpload(image, viewModel.Image.ImgUpload);
+
                     }
                 }
                 doctorToUpdate.FirstName = viewModel.Doctor.FirstName;
@@ -236,7 +238,7 @@ namespace DoctorsOffice.Controllers
                 doctorToUpdate.PhoneNumber = viewModel.Doctor.PhoneNumber;
                 doctorToUpdate.Email = viewModel.Doctor.Email;
                 doctorToUpdate.Position = viewModel.Doctor.Position;
-                
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

@@ -56,16 +56,14 @@ namespace DoctorsOffice.ViewModels
 
     public class ExaminationCRUViewModel: ExaminationViewModel
     {
-        public SelectList PersonalDoctorID { get; set; }
+        public SelectList ExamDoctorID { get; set; }
         public int SelectedDoctorID { get; set; }
         public SelectList PatientID { get; set; }
         public int SelectedPatientID { get; set; }
         public string LabResult { get; set; }
         public string ExamResult { get; set; }
-        public FileViewModel LabFile { get; set; }
-        public FileViewModel ExamFile { get; set; }
         public FileViewModel File { get; set; }
-        public ICollection<File> Files { get; set; }
+        public ICollection<FileViewModel> Files { get; set; }
     }
 
     public class FileViewModel
@@ -73,6 +71,7 @@ namespace DoctorsOffice.ViewModels
         public int ID { get; set; }
         [DataType(DataType.Upload)]
         public HttpPostedFileBase FileUpload { get; set; }
+        public IEnumerable<HttpPostedFileBase> MultipleFileUpload { get; set; }
         public string FileUrl { get; set; }
         public string FileName { get; set; }
         public TypeOfFile FileType { get; set; }

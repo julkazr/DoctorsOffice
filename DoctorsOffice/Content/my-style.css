@@ -41,6 +41,10 @@ hr {
     color: #011422 !important;
 }
 
+.only-print {
+    display: none !important;
+}
+
 .table-bcg {
     background-color: #E8EAF6;
     background-color: rgba(232,234,246,0.4);

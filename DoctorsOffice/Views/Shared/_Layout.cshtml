@@ -4,6 +4,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Doctor's Office</title>
+    <link rel="stylesheet" href="../../Content/my-style.css" media="all" />
+    <link rel="stylesheet" href="../../Content/print.css" media="print" />
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -16,7 +18,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         @Html.ActionLink("Doctors Office", "Index", "Home", new { area = "" }, new { @class = "navbar-brand pl-5" })
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="collapse navbar-collapse no-print" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item px-2 light-text">
                     @Html.ActionLink("Home", "Index", "Home")

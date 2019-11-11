@@ -221,6 +221,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\my-style.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\print.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -318,7 +319,6 @@
     <Content Include="Views\Examinations\Create.cshtml" />
     <Content Include="Views\Examinations\Delete.cshtml" />
     <Content Include="Views\Examinations\Details.cshtml" />
-    <Content Include="Views\Examinations\Edit.cshtml" />
     <Content Include="Views\Examinations\Index.cshtml" />
     <Content Include="Scripts\umd\popper.min.js.map" />
     <Content Include="Scripts\umd\popper.js.map" />
@@ -331,6 +331,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Doctors\Examinations.cshtml" />
     <Content Include="Views\Patients\ExaminationList.cshtml" />
+    <Content Include="Views\Examinations\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

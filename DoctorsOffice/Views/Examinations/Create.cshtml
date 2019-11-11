@@ -4,105 +4,92 @@
     ViewBag.Title = "Create";
 }
 
-<h2 class="dark-text">Create new examination</h2>
-
+<h2 class="dark-text">Examination</h2>
 
 @using (Html.BeginForm("Create", "Examinations", FormMethod.Post, new { enctype = "multipart/form-data" })) 
 {
     @Html.AntiForgeryToken()
     
-    <div class="container-fluid">
-        <h4 class="dark-text">Examination</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <form>
-            <div class="row">
-                <div class="form-group col-md-4 dark-text">
-                    @Html.LabelFor(model => model.PatientID, "Patient", htmlAttributes: new { @class = "control-label col-md-2 text-bold" })
-                    <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.SelectedPatientID, Model.PatientID, "Please select a patient", htmlAttributes: new { @class = "form-control input-fields" })
-                        @Html.ValidationMessageFor(model => model.PatientID, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group col-md-4 dark-text">
-                    @Html.LabelFor(model => model.PersonalDoctorID, "DoctorID", htmlAttributes: new { @class = "control-label col-md-2 text-bold" })
-                    <div class="col-md-12">
-                        @Html.DropDownListFor(model => model.SelectedDoctorID, Model.PersonalDoctorID, "Please select a doctor", htmlAttributes: new { @class = "form-control input-fields" })
-                        @Html.ValidationMessageFor(model => model.PersonalDoctorID, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group col-md-4 dark-text">
-                    @Html.LabelFor(model => model.ExamDate, htmlAttributes: new { @class = "control-label col-md-2 text-bold" })
-                    <div class="col-md-12">
-                        @Html.EditorFor(model => model.ExamDate, new { htmlAttributes = new { @class = "form-control input-fields" } })
-                        @Html.ValidationMessageFor(model => model.ExamDate, "", new { @class = "text-danger" })
-                    </div>
+<div class="container-fluid">
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <form>
+        <div class="row">
+            <div class="form-group col-md-4 dark-text">
+                @Html.LabelFor(model => model.PatientID, "Patient", htmlAttributes: new { @class = "control-label col-md-2 text-bold" })
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.SelectedPatientID, Model.PatientID, "Please select a patient", htmlAttributes: new { @class = "form-control input-fields" })
+                    @Html.ValidationMessageFor(model => model.PatientID, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="row">
-                <div class="form-group col-md-12 dark-text">
-                    @Html.LabelFor(model => model.Diagnose, htmlAttributes: new { @class = "control-label col-md-2 text-bold" })
-                    <div class="col-md-12">
-                        @Html.EditorFor(model => model.Diagnose, new { htmlAttributes = new { @class = "form-control col-md-12 input-fields" } })
-                        @Html.ValidationMessageFor(model => model.Diagnose, "", new { @class = "text-danger" })
-                    </div>
+            <div class="form-group col-md-4 dark-text">
+                @Html.LabelFor(model => model.ExamDoctorID, "DoctorID", htmlAttributes: new { @class = "control-label col-md-2 text-bold" })
+                <div class="col-md-12">
+                    @Html.DropDownListFor(model => model.SelectedDoctorID, Model.ExamDoctorID, "Please select a doctor", htmlAttributes: new { @class = "form-control input-fields" })
+                    @Html.ValidationMessageFor(model => model.ExamDoctorID, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="row">
-                <div class="form-group col dark-text">
-                    @Html.LabelFor(model => model.LabResult, htmlAttributes: new { @class = "control-label col-md-2 text-bold" })
-                    <div class="col">
-                        @Html.TextAreaFor(model => model.LabResult, new { @class = "form-control input-fields", @rows = 10 })
-                        @Html.ValidationMessageFor(model => model.LabResult, "", new { @class = "text-danger" })
-                    </div>
+            <div class="form-group col-md-4 dark-text">
+                @Html.LabelFor(model => model.ExamDate, htmlAttributes: new { @class = "control-label col-md-2 text-bold" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.ExamDate, new { htmlAttributes = new { @class = "form-control input-fields" } })
+                    @Html.ValidationMessageFor(model => model.ExamDate, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="row">
-                @*<div class="form-group dark-text">
-                    @Html.Label("Upload lab results: ", new { @class = "control-label col-md-10" })<br />
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.LabFile.FileUpload, new { type = "file", multiple = "multiple" })
-                        @Html.ValidationMessageFor(model => model.LabFile.FileUpload, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
-            </div>
-            <div class="row">
-                <div class="form-group col dark-text">
-                    @Html.LabelFor(model => model.ExamResult, htmlAttributes: new { @class = "control-label col-md-2 text-bold" })
-                    <div class="col">
-                        @Html.TextAreaFor(model => model.ExamResult, new { @class = "form-control input-fields", @rows = 20 })
-                        @Html.ValidationMessageFor(model => model.ExamResult, "", new { @class = "text-danger" })
-                    </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-12 dark-text">
+                @Html.LabelFor(model => model.Diagnose, htmlAttributes: new { @class = "control-label col-md-2 text-bold" })
+                <div class="col-md-12">
+                    @Html.EditorFor(model => model.Diagnose, new { htmlAttributes = new { @class = "form-control col-md-12 input-fields" } })
+                    @Html.ValidationMessageFor(model => model.Diagnose, "", new { @class = "text-danger" })
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-6 form-group dark-text">
-                    @Html.Label("Upload exams results: ", new { @class = "control-label col-md-10" })<br />
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.ExamFile.FileUpload, new { type = "file" })
-                        @Html.ValidationMessageFor(model => model.ExamFile.FileUpload, "", new { @class = "text-danger" })
-                    </div>
+        </div>
+        <div class="row">
+            <div class="form-group col dark-text">
+                @Html.LabelFor(model => model.LabResult, htmlAttributes: new { @class = "control-label col-md-2 text-bold" })
+                <div class="col">
+                    @Html.TextAreaFor(model => model.LabResult, new { @class = "form-control input-fields", @rows = 10 })
+                    @Html.ValidationMessageFor(model => model.LabResult, "", new { @class = "text-danger" })
                 </div>
-                @*<div class="col-md-6 form-group dark-text">
-                    @Html.Label("Other files for upload: ", new { @class = "control-label col-md-10" })<br />
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.File.FileUpload, new { type = "file", multiple = "multiple" })
-                        @Html.ValidationMessageFor(model => model.File.FileUpload, "", new { @class = "text-danger" })
-                    </div>
-                </div>*@
             </div>
-            <div class="row">
-                
+        </div>
+
+        <div class="row">
+            <div class="form-group col dark-text">
+                @Html.LabelFor(model => model.ExamResult, htmlAttributes: new { @class = "control-label col-md-2 text-bold" })
+                <div class="col">
+                    @Html.TextAreaFor(model => model.ExamResult, new { @class = "form-control input-fields", @rows = 20 })
+                    @Html.ValidationMessageFor(model => model.ExamResult, "", new { @class = "text-danger" })
+                </div>
             </div>
-            <div class="form-group dark-text">
-                <button type="submit" value="Create" class="btn btn-default dark-blue-bckg light-text">Create</button>   |
-                <button class="btn btn-default dark-blue-bckg light-text">Print</button>
-                <strong class="back-link">   |  @Html.ActionLink("Back to List", "Index")</strong>
+        </div>
+        <div class="row no-print">
+            <div class="col-md-6 form-group dark-text">
+                @Html.Label("Upload exams files: ", new { @class = "control-label col-md-10" })<br />
+                <div class="col-md-10">
+                    @Html.TextBoxFor(model => model.File.MultipleFileUpload, new { type = "file", multiple = "multiple" })
+                    @Html.ValidationMessageFor(model => model.File.MultipleFileUpload, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </form>
-    </div>
+        </div>
+        <div class="form-group dark-text no-print">
+            <button type="submit" value="Create" class="btn btn-default dark-blue-bckg light-text">Create</button>   |
+            <button id="btnPrint" class="btn btn-default dark-blue-bckg light-text">Print</button>
+            <strong class="back-link">   |  @Html.ActionLink("Back to List", "Index")</strong>
+        </div>
+    </form>
+</div>
 }
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function() {
+            $("#btnPrint").click(function() {
+                window.print();
+            });
+        });
+    </script>
 }

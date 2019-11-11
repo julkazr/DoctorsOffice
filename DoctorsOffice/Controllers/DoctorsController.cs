@@ -160,11 +160,18 @@ namespace DoctorsOffice.Controllers
         // GET: Doctors/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             var doctor = db.Doctors
                             .Include(d => d.Image)
                             .SingleOrDefault(d => d.ID == id);
+            if (doctor == null)
+            {
+                return HttpNotFound();
+            }
             var doctorName = doctor.FirstName + " " + doctor.LastName;
-
             DoctorTranslator editDoctorTranslator = new DoctorTranslator();
             DoctorEditViewModel viewModel = new DoctorEditViewModel();
             viewModel.DoctorsName = doctorName;

@@ -88,7 +88,7 @@ namespace DoctorsOffice.Controllers
         public ActionResult Create()
         {
             ExaminationCRUViewModel viewModel = new ExaminationCRUViewModel();
-            viewModel.PersonalDoctorID = new SelectList(db.Doctors, "ID", "FullName");
+            viewModel.ExamDoctorID = new SelectList(db.Doctors, "ID", "FullName");
             viewModel.PatientID = new SelectList(db.Patients, "ID", "FullName");
             return View(viewModel);
         }
@@ -108,30 +108,17 @@ namespace DoctorsOffice.Controllers
             ExaminationTranslator examTranslator = new ExaminationTranslator();
             List<File> files = new List<File>();
             Examination exam = examTranslator.ToExaminationDataModel(viewModel, files);
-            viewModel.PersonalDoctorID = new SelectList(db.Doctors, "ID", "FullName", exam.DoctorID);
+            viewModel.ExamDoctorID = new SelectList(db.Doctors, "ID", "FullName", exam.DoctorID);
             viewModel.PatientID = new SelectList(db.Patients, "ID", "FullName", exam.PatientID);
             if (ModelState.IsValid)
-            {
-                
+            {                
                 FileManipulation fileUploader = new FileManipulation();
-
-
-                //foreach(file in files)
-                //{
-                //    fileUploader.FileUpload(viewModel.LabFile.FileUpload);
-                //};
-                var file = new File
-                {
-                    ID = viewModel.ExamFile.ID,
-                    ContentType = viewModel.ExamFile.FileUpload.ContentType
-                };
-                fileUploader.FileUpload(file, viewModel.ExamFile.FileUpload);
-                db.Files.Add(file);
-                //foreach (file in files)
-                //{
-                //    fileUploader.FileUpload(viewModel.File.FileUpload);
-
-                //};
+                fileUploader.FileUpload(files, viewModel.File.MultipleFileUpload);
+                foreach (File file in files)
+                {        
+                    db.Files.Add(file);
+                }
+                
                 exam.DoctorID = viewModel.SelectedDoctorID;
                 exam.PatientID = viewModel.SelectedPatientID;
                 exam.Files = files;
@@ -150,14 +137,21 @@ namespace DoctorsOffice.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Examination examination = db.Examinations.Find(id);
-            if (examination == null)
+            Examination exam = db.Examinations
+                                .Include(e => e.Doctor)
+                                .Include(e => e.Patient)
+                                .Include(e => e.Files)
+                                .SingleOrDefault(e => e.ID == id);
+            if (exam == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.DoctorID = new SelectList(db.Doctors, "ID", "FirstName", examination.DoctorID);
-            ViewBag.PatientID = new SelectList(db.Patients, "ID", "FirstName", examination.PatientID);
-            return View(examination);
+            ExaminationTranslator examTranslator = new ExaminationTranslator();
+            ExaminationCRUViewModel viewModel = new ExaminationCRUViewModel();
+            viewModel = examTranslator.ToCRUViewModel(exam);
+            viewModel.ExamDoctorID = new SelectList(db.Doctors, "ID", "FullName", exam.DoctorID);
+            viewModel.PatientID = new SelectList(db.Patients, "ID", "FullName", exam.PatientID);
+            return View(viewModel);
         }
 
         // POST: Examinations/Edit/5
@@ -165,17 +159,37 @@ namespace DoctorsOffice.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,DateOfVisit,DoctorID,PatientID,DiagnoseCode,LabResults,ExamResults")] Examination examination)
+        public ActionResult Edit(int? id, ExaminationCRUViewModel viewModel)
         {
+            Examination examToUpdate = db.Examinations
+                                         .Include(e => e.Doctor)
+                                         .Include(e => e.Patient)
+                                         .Include(e => e.Files)
+                                         .SingleOrDefault(e => e.ID == id);
+            FileManipulation editFile = new FileManipulation();
+            List<File> files = new List<File>();
+
             if (ModelState.IsValid)
             {
-                db.Entry(examination).State = EntityState.Modified;
+                editFile.FileUpload(files, viewModel.File.MultipleFileUpload);
+                foreach (File file in files)
+                {
+                    db.Files.Add(file);
+                }
+                //examToUpdate = examTranslator.ToExaminationDataModel(viewModel, files);
+                examToUpdate.DateOfVisit = viewModel.ExamDate;
+                examToUpdate.DiagnoseCode = viewModel.Diagnose;
+                examToUpdate.LabResults = viewModel.LabResult;
+                examToUpdate.ExamResults = viewModel.ExamResult;
+                examToUpdate.DoctorID = viewModel.SelectedDoctorID;
+                examToUpdate.PatientID = viewModel.SelectedPatientID;
+                examToUpdate.Files = files;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.DoctorID = new SelectList(db.Doctors, "ID", "FirstName", examination.DoctorID);
-            ViewBag.PatientID = new SelectList(db.Patients, "ID", "FirstName", examination.PatientID);
-            return View(examination);
+            viewModel.ExamDoctorID = new SelectList(db.Doctors, "ID", "FullName", examToUpdate.DoctorID);
+            viewModel.PatientID = new SelectList(db.Patients, "ID", "FullName", examToUpdate.PatientID);
+            return View(viewModel);
         }
 
         // GET: Examinations/Delete/5

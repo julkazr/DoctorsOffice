@@ -57,9 +57,9 @@ namespace DoctorsOffice.ViewModels
     public class ExaminationCRUViewModel: ExaminationViewModel
     {
         public SelectList ExamDoctorID { get; set; }
-        public int SelectedDoctorID { get; set; }
+        public int? SelectedDoctorID { get; set; }
         public SelectList PatientID { get; set; }
-        public int SelectedPatientID { get; set; }
+        public int? SelectedPatientID { get; set; }
         public string LabResult { get; set; }
         public string ExamResult { get; set; }
         public FileViewModel File { get; set; }

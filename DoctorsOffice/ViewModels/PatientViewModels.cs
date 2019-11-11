@@ -57,7 +57,7 @@ namespace DoctorsOffice.ViewModels
         public BloodType? BloodType { get; set; }
         public string PatientSocSecurityNum { get; set; }
         public SelectList PersonalDoctorID { get; set; }
-        public int SelectedDoctorID { get; set; }
+        public int? SelectedDoctorID { get; set; }
     }
 
     public class PatientCreateViewModel: PatientEditViewModel

@@ -113,15 +113,17 @@ namespace DoctorsOffice.Controllers
             if (ModelState.IsValid)
             {                
                 FileManipulation fileUploader = new FileManipulation();
-                fileUploader.FileUpload(files, viewModel.File.MultipleFileUpload);
-                foreach (File file in files)
-                {        
-                    db.Files.Add(file);
+                if(viewModel.File.FileUpload != null) { 
+                    fileUploader.FileUpload(files, viewModel.File.MultipleFileUpload);
+                    foreach (File file in files)
+                    {        
+                        db.Files.Add(file);
+                    }
+                    exam.Files = files;
                 }
-                
                 exam.DoctorID = viewModel.SelectedDoctorID;
                 exam.PatientID = viewModel.SelectedPatientID;
-                exam.Files = files;
+                
                 db.Examinations.Add(exam);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -171,19 +173,22 @@ namespace DoctorsOffice.Controllers
 
             if (ModelState.IsValid)
             {
-                editFile.FileUpload(files, viewModel.File.MultipleFileUpload);
-                foreach (File file in files)
+                if (viewModel.File.FileUpload != null)
                 {
-                    db.Files.Add(file);
+                    editFile.FileUpload(files, viewModel.File.MultipleFileUpload);
+                    foreach (File file in files)
+                    {
+                        db.Files.Add(file);
+                    }
+                    examToUpdate.Files = files;
                 }
                 //examToUpdate = examTranslator.ToExaminationDataModel(viewModel, files);
                 examToUpdate.DateOfVisit = viewModel.ExamDate;
                 examToUpdate.DiagnoseCode = viewModel.Diagnose;
                 examToUpdate.LabResults = viewModel.LabResult;
-                examToUpdate.ExamResults = viewModel.ExamResult;
+                examToUpdate.ExamResults = viewModel.ExamResult; 
                 examToUpdate.DoctorID = viewModel.SelectedDoctorID;
                 examToUpdate.PatientID = viewModel.SelectedPatientID;
-                examToUpdate.Files = files;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

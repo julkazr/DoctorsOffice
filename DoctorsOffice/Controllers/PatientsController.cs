@@ -24,7 +24,9 @@ namespace DoctorsOffice.Controllers
             int pageSize = 3;
             int pageNumber = (page ?? 1);
             PatientListViewModel viewModel = new PatientListViewModel();
-            IQueryable<Patient> patientsQuery = db.Patients;
+            IQueryable<Patient> patientsQuery = db.Patients
+                                                  .Include(p => p.PersonalDoctor)
+                                                  ;
 
             if (!string.IsNullOrEmpty(searchByName))
             {
@@ -41,20 +43,10 @@ namespace DoctorsOffice.Controllers
                     break;
             }
 
-            //var patientTranslator = new PatientTranslator();
+            PatientTranslator patientTranslator = new PatientTranslator();
 
             viewModel.Patients = patientsQuery
-                                .Select(p => new PatientViewModel()
-                                {
-                                    ID = p.ID,
-                                    FirstName = p.FirstName,
-                                    LastName = p.LastName,
-                                    DoctorFirstName = p.PersonalDoctor.FirstName,
-                                    DoctorLastName = p.PersonalDoctor.LastName,
-                                    PhoneNumber = p.PhoneNumber,
-                                    Email = p.Email
-                                })
-                                //.Select(patientTranslator.ToViewModel)
+                                .Select(patientTranslator.ToViewModel)
                                 .ToPagedList(pageNumber, pageSize);
 
             viewModel.CurrentSort = sort;

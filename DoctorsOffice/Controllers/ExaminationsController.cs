@@ -80,6 +80,7 @@ namespace DoctorsOffice.Controllers
 
             ExaminationTranslator examinationDetailsTranslator = new ExaminationTranslator();
             ExaminationCRUViewModel viewModel = examinationDetailsTranslator.ToCRUViewModel(examination);
+            
 
             return View(viewModel);
         }
@@ -113,14 +114,14 @@ namespace DoctorsOffice.Controllers
             if (ModelState.IsValid)
             {                
                 FileManipulation fileUploader = new FileManipulation();
-                if(viewModel.File.FileUpload != null) { 
-                    fileUploader.FileUpload(files, viewModel.File.MultipleFileUpload);
-                    foreach (File file in files)
-                    {        
-                        db.Files.Add(file);
-                    }
-                    exam.Files = files;
+               
+                fileUploader.FileUpload(files, viewModel.File.MultipleFileUpload);
+                foreach (File file in files)
+                {        
+                    db.Files.Add(file);
                 }
+                exam.Files = files;
+                
                 exam.DoctorID = viewModel.SelectedDoctorID;
                 exam.PatientID = viewModel.SelectedPatientID;
                 
@@ -173,15 +174,15 @@ namespace DoctorsOffice.Controllers
 
             if (ModelState.IsValid)
             {
-                if (viewModel.File.FileUpload != null)
-                {
+                //if (viewModel.File.FileUpload != null)
+                //{
                     editFile.FileUpload(files, viewModel.File.MultipleFileUpload);
                     foreach (File file in files)
                     {
                         db.Files.Add(file);
                     }
                     examToUpdate.Files = files;
-                }
+                //}
                 //examToUpdate = examTranslator.ToExaminationDataModel(viewModel, files);
                 examToUpdate.DateOfVisit = viewModel.ExamDate;
                 examToUpdate.DiagnoseCode = viewModel.Diagnose;

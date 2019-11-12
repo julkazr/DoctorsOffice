@@ -46,18 +46,18 @@ namespace DoctorsOffice
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
-            // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+            //Uncomment the following lines to enable logging in with third party login providers
+            app.UseMicrosoftAccountAuthentication(
+                clientId: "efcf7770-d6fe-49b8-bbb1-7f4534d94a61",
+                clientSecret: "6CPdHwC4?k-ND9G:vd:zuLe3okxzPo7N");
 
             //app.UseTwitterAuthentication(
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
+            app.UseFacebookAuthentication(
+               appId: "430481327638306",
+               appSecret: "ced16c60096f258a9b63f4a9428cc4bd");
 
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {

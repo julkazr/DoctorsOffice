@@ -20,6 +20,7 @@ namespace DoctorsOffice.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Examinations
+        [Authorize]
         public ActionResult Index(string sort, string searchByPatientName, string searchByDoctorName, int? page)
         {
             int pageSize = 3;

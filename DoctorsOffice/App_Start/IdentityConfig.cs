@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -10,6 +13,8 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 using DoctorsOffice.Data;
 using DoctorsOffice.DbContexts;
 
@@ -19,7 +24,16 @@ namespace DoctorsOffice
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
+            var apiKey = ConfigurationManager.AppSettings["SendGridApiKey"];
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress("jugrinov@gmail.com", "Test noreply");
+            var subject = message.Subject;
+            var to = new EmailAddress(message.Destination);
+            var plainTextContent = message.Body;
+            var htmlContent = message.Body;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = client.SendEmailAsync(msg);
+
             return Task.FromResult(0);
         }
     }

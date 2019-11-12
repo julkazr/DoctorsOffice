@@ -8,6 +8,11 @@ namespace DoctorsOffice.ViewModels
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+        [Display(Name = "Full Name")]
+        public string FullName { get; set; }
+        [Required]
+        [Display(Name = "Nickname")]
+        public string NickName { get; set; }
     }
 
     public class ExternalLoginListViewModel
@@ -68,6 +73,11 @@ namespace DoctorsOffice.ViewModels
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+        [Display(Name = "Full Name")]
+        public string FullName { get; set; }
+        [Required]
+        [Display(Name = "Nickname")]
+        public string NickName { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

@@ -352,6 +352,7 @@
     <Content Include="Views\Patients\ExaminationList.cshtml" />
     <Content Include="Views\Examinations\Edit.cshtml" />
     <Content Include="Views\Shared\Info.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

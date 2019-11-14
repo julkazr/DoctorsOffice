@@ -63,6 +63,8 @@ namespace DoctorsOffice.ViewModels
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+        public string UserName { get; set; }
+
         [Display(Name = "Remember me?")]
         public bool RememberMe { get; set; }
     }

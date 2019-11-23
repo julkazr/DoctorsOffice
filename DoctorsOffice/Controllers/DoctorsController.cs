@@ -133,7 +133,7 @@ namespace DoctorsOffice.Controllers
                     {
                         ModelState.AddModelError("ImgUpload", "Please, choose either GIF, JPG, or PNG type of files.");
                     }
-                    //upload with file-system
+                    //upload with file-system, make sure that folder Uploads in DoctorsOffice exist
                     //var imgFileName = Guid.NewGuid().ToString() + GetExtension(viewModel.Image.ImgUpload.ContentType);
                     //var uploadDir = "~/Uploads";
                     //var imagePath = System.IO.Path.Combine(Server.MapPath(uploadDir), imgFileName);

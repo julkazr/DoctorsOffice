@@ -26,8 +26,7 @@ namespace DoctorsOffice.Controllers
             int pageNumber = (page ?? 1);
             PatientListViewModel viewModel = new PatientListViewModel();
             IQueryable<Patient> patientsQuery = db.Patients
-                                                  .Include(p => p.PersonalDoctor)
-                                                  ;
+                                                  .Include(p => p.PersonalDoctor);
 
             if (!string.IsNullOrEmpty(searchByName))
             {

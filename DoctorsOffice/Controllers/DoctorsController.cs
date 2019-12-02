@@ -27,14 +27,16 @@ namespace DoctorsOffice.Controllers
             int pageNumber = (page ?? 1);
 
             DoctorListViewModel viewModel = new DoctorListViewModel();
+            SearchHelper nameFilter = new SearchHelper();
 
             IQueryable<Doctor> doctorsQuery = db.Doctors;
 
+            //doctorsQuery = nameFilter.SearchByName(doctorsQuery, searchByName);
             if (!string.IsNullOrEmpty(searchByName))
             {
                 doctorsQuery = doctorsQuery
                     .Where(d => d.FirstName.Contains(searchByName) || d.LastName.Contains(searchByName));
-                
+
             }
             if (!string.IsNullOrEmpty(searchByPosition))
             {

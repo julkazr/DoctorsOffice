@@ -210,6 +210,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\FileManipulation.cs" />
+    <Compile Include="Helpers\SearchHelper.cs" />
     <Compile Include="Translators\DoctorTranslator.cs" />
     <Compile Include="Translators\ExaminationTranslator.cs" />
     <Compile Include="Translators\PatientTranslator.cs" />

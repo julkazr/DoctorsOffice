@@ -218,6 +218,7 @@
     <Compile Include="Data\Doctor.cs" />
     <Compile Include="Data\Examination.cs" />
     <Compile Include="Data\IdentityModels.cs" />
+    <Compile Include="ViewModels\AdministrationViewModel.cs" />
     <Compile Include="ViewModels\DoctorCreateViewModel.cs" />
     <Compile Include="ViewModels\DoctorDeleteViewModel.cs" />
     <Compile Include="ViewModels\DoctorEditViewModel.cs" />

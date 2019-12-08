@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
@@ -48,22 +49,27 @@ namespace DoctorsOffice
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
             //Uncomment the following lines to enable logging in with third party login providers
+            var msClientId = ConfigurationManager.AppSettings["MSClientId"];
+            var msClientSecret = ConfigurationManager.AppSettings["MSClientSecret"];
             app.UseMicrosoftAccountAuthentication(
-                clientId: "efcf7770-d6fe-49b8-bbb1-7f4534d94a61",
-                clientSecret: "6CPdHwC4?k-ND9G:vd:zuLe3okxzPo7N");
+                clientId: msClientId,
+                clientSecret: msClientSecret);
 
             //app.UseTwitterAuthentication(
             //   consumerKey: "",
             //   consumerSecret: "");
-
+            var fbAppId = ConfigurationManager.AppSettings["FacebookClientId"];
+            var fbAppSecret = ConfigurationManager.AppSettings["FacebookClientSecret"];
             app.UseFacebookAuthentication(
-               appId: "430481327638306",
-               appSecret: "ced16c60096f258a9b63f4a9428cc4bd");
+               appId: fbAppId,
+               appSecret: fbAppSecret);
 
+            var googleClientId = ConfigurationManager.AppSettings["GoogleClientId"];
+            var googleClientSecret = ConfigurationManager.AppSettings["GoogleClientSecret"];
             app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             {
-                ClientId = "871473669581-ihslni68n0cim5d44c2krjq8vq95j342.apps.googleusercontent.com",
-                ClientSecret = "gM76anOv5Td3j_ZhnXCdD0uR"
+                ClientId = googleClientId,
+                ClientSecret = googleClientSecret
             });
         }
     }

@@ -26,7 +26,7 @@ namespace DoctorsOffice
         {
             var apiKey = ConfigurationManager.AppSettings["SendGridApiKey"];
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("jugrinov@gmail.com", "Test noreply");
+            var from = new EmailAddress("jugrinov@gmail.com", "DoctorsOfficeApp noreply");
             var subject = message.Subject;
             var to = new EmailAddress(message.Destination);
             var plainTextContent = message.Body;

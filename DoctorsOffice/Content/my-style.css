@@ -36,6 +36,10 @@ hr {
     color: rgba(126,227,237,1)!important;
 }
 
+.text-small {
+    font-size: small;
+}
+
 .main-container {
     min-height: 80vh;
     color: #011422 !important;

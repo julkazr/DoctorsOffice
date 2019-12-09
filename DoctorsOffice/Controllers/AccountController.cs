@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using DoctorsOffice.Data;
 using DoctorsOffice.ViewModels;
 using DoctorsOffice.DbContexts;
+using System.Configuration;
 
 namespace DoctorsOffice.Controllers
 {
@@ -19,15 +20,17 @@ namespace DoctorsOffice.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationRoleManager _roleManager;
 
         public AccountController()
         {
         }
-
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+         
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ApplicationRoleManager roleManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            RoleManager = roleManager;
         }
 
         public ApplicationSignInManager SignInManager
@@ -54,13 +57,28 @@ namespace DoctorsOffice.Controllers
             }
         }
 
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
+            }
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
-        {
+         {
+            
+            Task.Run(async () => { await CreateAdminIfNeeded(); }).Wait();
+           
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return View(); 
         }
 
         //
@@ -522,6 +540,28 @@ namespace DoctorsOffice.Controllers
                                             "Please confirm your account by clicking <a href=\""
                                             + callbackUrl + "\">here</a>");
             return callbackUrl;
+        }
+
+        private async Task CreateAdminIfNeeded()
+        {
+            string adminUserName = ConfigurationManager.AppSettings["AdminUserName"];
+            string adminPassword = ConfigurationManager.AppSettings["AdminPassword"];
+            var objAdminUser = UserManager.FindByEmail(adminUserName);
+
+            if (objAdminUser == null)
+            {
+                var objNewAdminUser = new ApplicationUser
+                                    { UserName = "Admin",
+                                      Email = adminUserName,
+                                      EmailConfirmed = true
+                                    };
+                var adminUserCreateResult = await UserManager.CreateAsync(objNewAdminUser, adminPassword);
+                if (adminUserCreateResult.Succeeded)
+                {
+                    UserManager.AddToRole(objNewAdminUser.Id, "Admin");
+                }
+
+            }
         }
         #endregion
     }

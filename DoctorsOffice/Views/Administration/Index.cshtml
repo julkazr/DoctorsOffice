@@ -1,0 +1,62 @@
+﻿@model DoctorsOffice.ViewModels.AdministrationListViewModel
+@using PagedList;
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2 class="dark-text">Users</h2>
+
+<p class="dark-text text-bold">
+    @Html.ActionLink("Create New", "Create")
+</p>
+@using (Html.BeginForm("Index", "Administration", FormMethod.Get))
+{
+    <div class="row">
+        <p class="col-lg-6 form-inline dark-text text-bold">
+            Find patient by name:
+            @Html.TextBox("searchByUserName", Model.CurrentFilter as string, new { @class = "form-control ml-2 input-fields" })
+            <button type="submit" class="btn btn-default ml-2 dark-blue-bckg light-text">Search</button>
+        </p>
+    </div>
+}
+
+<table class="table table-bcg dark-text">
+    <tr>
+        <th>
+            @Html.ActionLink("Username", "Index", new { sort = Model.SortByUserName, searchByName = Model.CurrentFilter, page = 1 })
+        </th>
+        <th>
+            Email
+        </th>
+        <th>
+            Role
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model.Users)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+
+            <td class="text-bold">
+                @Html.ActionLink("Edit", "Edit", new { id = item.UserId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.UserId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.UserId })
+            </td>
+        </tr>
+    }
+</table>
+
+Page @(Model.Users.PageCount < Model.Users.PageNumber ? 0 : Model.Users.PageNumber) of @Model.Users.PageCount
+@Html.PagedListPager(Model.Users, page => Url.Action("Index",
+                                                        new { page, sort = Model.CurrentSort, searchByName = Model.CurrentFilter}))

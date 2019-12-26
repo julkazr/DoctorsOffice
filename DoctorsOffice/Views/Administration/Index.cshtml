@@ -8,9 +8,7 @@
 
 <h2 class="dark-text">Users</h2>
 
-<p class="dark-text text-bold">
-    @Html.ActionLink("Create New", "Create")
-</p>
+
 @using (Html.BeginForm("Index", "Administration", FormMethod.Get))
 {
     <div class="row">
@@ -50,7 +48,6 @@
 
             <td class="text-bold">
                 @Html.ActionLink("Edit", "Edit", new { id = item.UserId }) |
-                @Html.ActionLink("Details", "Details", new { id = item.UserId }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.UserId })
             </td>
         </tr>

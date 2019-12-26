@@ -14,7 +14,7 @@ namespace DoctorsOffice.Translators
             AdministrationUserViewModel result = new AdministrationUserViewModel
             {
                 UserId = user.Id,
-                UserName = user.UserName,
+                UserName = user.FullName,
                 UserEmail = user.Email,
                 Role = " "
             };

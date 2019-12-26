@@ -9,17 +9,16 @@ namespace DoctorsOffice.Translators
 {
     public class AdministrationTranslator
     {
-        //public AdministrationViewModel ToViewModel(ApplicationUser user)
-        //{
-        //    AdministrationViewModel result;
-        //    result = new AdministrationViewModel
-        //    {
-        //        UserId = user.Id,
-        //        UserName = user.FullName,
-        //        UserEmail = user.Email,
-        //        RoleId = user.Roles.
-        //    };
-        //    return result;
-        //}
+        public AdministrationUserViewModel ToViewModel(ApplicationUser user)
+        {
+            AdministrationUserViewModel result = new AdministrationUserViewModel
+            {
+                UserId = user.Id,
+                UserName = user.UserName,
+                UserEmail = user.Email,
+                Role = " "
+            };
+            return result;
+        }
     }
 }

@@ -100,35 +100,35 @@ namespace DoctorsOffice.Controllers
             {
                 var user = db.Users.Single(u => u.Email.Equals(model.Email));
             
-            if (user != null)
-            {
-                model.UserName = user.UserName;
-                if (!await UserManager.IsEmailConfirmedAsync(user.Id))
+                if (user != null)
                 {
-                    string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account - Resend");
-                        ViewBag.errorMessage = "You must have a confirmed email to log on. "
-                                  + "The confirmation token has been resent to your email account.";
-                        return View("Error");
+                    model.UserName = user.UserName;
+                    if (!await UserManager.IsEmailConfirmedAsync(user.Id))
+                    {
+                        string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account - Resend");
+                            ViewBag.errorMessage = "You must have a confirmed email to log on. "
+                                      + "The confirmation token has been resent to your email account.";
+                            return View("Error");
+                    }
                 }
-            }
 
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, change to shouldLockout: true
+                    // This doesn't count login failures towards account lockout
+                    // To enable password failures to trigger account lockout, change to shouldLockout: true
                 
-            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
-            }
+                var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+                switch (result)
+                {
+                    case SignInStatus.Success:
+                        return RedirectToLocal(returnUrl);
+                    case SignInStatus.LockedOut:
+                        return View("Lockout");
+                    case SignInStatus.RequiresVerification:
+                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    case SignInStatus.Failure:
+                    default:
+                        ModelState.AddModelError("", "Invalid login attempt.");
+                        return View(model);
+                }
             }
         }
 

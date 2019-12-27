@@ -11,7 +11,6 @@ namespace DoctorsOffice.Translators
     {
         public PatientViewModel ToViewModel(Patient patient)
         {
-            
             PatientViewModel result;
             if(patient.PersonalDoctor != null)
             {

@@ -70,7 +70,6 @@
                 <div class="form-group dark-text">
                     @Html.Label("Photo", new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @*<input type="file" id="Picture" name="upload" />*@
                         @Html.TextBoxFor(model => model.Image.ImgUpload, new { type = "file", name = "upload" })
                         @Html.ValidationMessageFor(model => model.Image.ImgUpload, "", new { @class = "text-danger" })
                     </div>

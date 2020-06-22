@@ -49,7 +49,7 @@ namespace DoctorsOffice.Controllers
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _userManager ?? HttpContext.GetOwinContext().Get<ApplicationUserManager>();
             }
             private set
             {

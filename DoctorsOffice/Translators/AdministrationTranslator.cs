@@ -7,18 +7,18 @@ using System.Web;
 
 namespace DoctorsOffice.Translators
 {
-    public class AdministrationTranslator
-    {
-        public AdministrationUserViewModel ToViewModel(ApplicationUser user)
-        {
-            AdministrationUserViewModel result = new AdministrationUserViewModel
-            {
-                UserId = user.Id,
-                UserName = user.FullName,
-                UserEmail = user.Email,
-                Role = " "
-            };
-            return result;
-        }
-    }
+    //public class AdministrationTranslator
+    //{
+    //    public AdministrationListViewModel ToViewModel(ApplicationUser user)
+    //    {
+    //        AdministrationListViewModel result = new AdministrationListViewModel
+    //        {
+    //            UserId = user.Id,
+    //            UserName = user.FullName,
+    //            UserEmail = user.Email,
+    //            //Roles = "none"
+    //        };
+    //        return result;
+    //    }
+    //}
 }

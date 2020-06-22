@@ -11,7 +11,8 @@ namespace DoctorsOffice.ViewModels
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
         public string SortByUserName { get; set; }
-        public IPagedList<AdministrationUserViewModel> Users { get; set; }
+        public IEnumerable<AdministrationUserViewModel> Users { get; set; }
+
     }
 
     public class UserRoleViewModel
@@ -25,6 +26,6 @@ namespace DoctorsOffice.ViewModels
         public string UserId { get; set; }
         public string UserName { get; set; }
         public string UserEmail { get; set; }
-        public string Role { get; set; }
+        public IEnumerable<string> Roles { get; set; }
     }
 }

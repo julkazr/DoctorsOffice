@@ -7,11 +7,13 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Microsoft.AspNet.Identity.EntityFramework;
 using DoctorsOffice.Data;
 using DoctorsOffice.ViewModels;
 using DoctorsOffice.DbContexts;
 using PagedList;
 using DoctorsOffice.Translators;
+using System.Collections;
 
 namespace DoctorsOffice.Controllers
 {
@@ -55,44 +57,101 @@ namespace DoctorsOffice.Controllers
             }
         }
         // GET: UserList
-        public ActionResult Index(string sort, string searchByUserName, int? page)
+        [Authorize(Roles = "Admin")]
+        public ActionResult Index(string sort, string currentFilter, string searchByUserName, int? page)
         {
-            int pageSize = 3;
-            int pageNumber = (page ?? 1);
+            int intPage = 1;
+            int intPageSize = 5;
+            //int intTotalPageCount = 0;
+            if (searchByUserName != null)
+            {
+                intPage = 1;
+            }
+            else
+            {
+                if (currentFilter != null)
+                {
+                    searchByUserName = currentFilter;
+                    intPage = page ?? 1;
+                }
+                else
+                {
+                    searchByUserName = "";
+                    intPage = page ?? 1;
+                }
+            }
+            
+           
             AdministrationListViewModel viewModel = new AdministrationListViewModel();
-            //var sql = @"
-            //SELECT AspNetUsers.UserName, AspNetRoles.Name As Role
-            //FROM AspNetUsers 
-            //LEFT JOIN AspNetUserRoles ON  AspNetUserRoles.UserId = AspNetUsers.Id 
-            //LEFT JOIN AspNetRoles ON AspNetRoles.Id = AspNetUserRoles.RoleId";
-            //var result = db.Database.SqlQuery<AdministrationViewModel>(sql).ToPagedList(pageNumber, pageSize);
+            int intSkip = (intPage - 1) * intPageSize;
+            //intTotalPageCount = UserManager.Users
+            //       .Where(x => x.UserName.Contains(searchByUserName))
+            //       .Count();
+            var usersQuery = UserManager.Users
+                            .Where(x => x.UserName
+                            .Contains(searchByUserName))
+                            .OrderBy(x => x.UserName)
+                            .Skip(intSkip)
+                            .Take(intPageSize)
+                            .ToList(); ;
 
-            var usersQuery = UserManager.Users;
+            //if (!string.IsNullOrEmpty(searchByUserName))
+            //{
+            //    usersQuery = usersQuery.Where(u => u.FullName.Contains(searchByUserName));
+            //}
 
-            if (!string.IsNullOrEmpty(searchByUserName))
+            //switch (sort)
+            //{
+            //    case "name_desc":
+            //        usersQuery = usersQuery.OrderByDescending(u => u.FullName);
+            //        break;
+            //    default:
+            //        usersQuery = usersQuery.OrderBy(p => p.FullName);
+            //        break;
+            //}
+
+            // AdministrationTranslator userTranslator = new AdministrationTranslator();
+            //AdministrationListViewModel viewModel = new AdministrationListViewModel();
+            foreach (var item in usersQuery)
             {
-                usersQuery = usersQuery.Where(u => u.FullName.Contains(searchByUserName));
+                AdministrationUserViewModel user = new AdministrationUserViewModel();
+                user.UserId = item.Id;
+                user.UserName = item.UserName;
+                user.UserEmail = item.Email;
+                user.Roles = UserManager.GetRoles(item.Id);
+                //viewModel.Add(user);
             }
-
-            switch (sort)
-            {
-                case "name_desc":
-                    usersQuery = usersQuery.OrderByDescending(u => u.FullName);
-                    break;
-                default:
-                    usersQuery = usersQuery.OrderBy(p => p.FullName);
-                    break;
-            }
-
-            AdministrationTranslator userTranslator = new AdministrationTranslator();
-            viewModel.Users = usersQuery
-                             .Select(userTranslator.ToViewModel)
-                             .ToPagedList(pageNumber, pageSize);
             viewModel.CurrentSort = sort;
             viewModel.SortByUserName = string.IsNullOrEmpty(sort) ? "name_desc" : "";
             viewModel.CurrentFilter = searchByUserName;
+            //foreach(var user in viewModel)
+            //{
+            //    viewModel.Roles = UserManager.GetRoles(user.UserId);
+            //}
+            //var _UserAsIPagedList =
+            //        new StaticPagedList<>
+            //        (
+            //            col_UserViewMdel, intPage, intPageSize, intTotalPageCount
+            //            );
 
             return View(viewModel);
         }
+
+        #region Helpers
+        //public class AdministrationTranslator
+        //{
+        //    public AdministrationUserViewModel ToViewModel(ApplicationUser user)
+        //    {
+        //        AdministrationUserViewModel result = new AdministrationUserViewModel
+        //        {
+        //            UserId = user.Id,
+        //            UserName = user.FullName,
+        //            UserEmail = user.Email,
+        //            Roles = UserManager.GetRoles(user.UserId)
+        //            };
+        //        return result;
+        //    }
+        //}
+        #endregion
     }
 }

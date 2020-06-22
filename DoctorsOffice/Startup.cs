@@ -18,10 +18,11 @@ namespace DoctorsOffice
             ApplicationDbContext context = new ApplicationDbContext();
             
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(context));
-            if(!roleManager.RoleExists("User"))
+            var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
+            if (!roleManager.RoleExists("Employee"))
             {
                 var role = new IdentityRole();
-                role.Name = "User";
+                role.Name = "Employee";
                 roleManager.Create(role);
             }
             if(!roleManager.RoleExists("Admin"))
@@ -29,6 +30,19 @@ namespace DoctorsOffice
                 var role = new IdentityRole();
                 role.Name = "Admin";
                 roleManager.Create(role);
+            }
+            var user = new ApplicationUser();
+            user.UserName = "Admin";
+            user.Email = "admin@admin.com";
+
+            string userPWD = "Admin#1";
+
+            var adminUser = UserManager.Create(user, userPWD);
+
+            //Add default User to Role Admin    
+            if (adminUser.Succeeded)
+            {
+                var result1 = UserManager.AddToRole(user.Id, "Admin");
             }
         }
         public void Configuration(IAppBuilder app)

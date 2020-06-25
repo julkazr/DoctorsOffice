@@ -11,17 +11,6 @@ namespace DoctorsOffice.Translators
     {
         public PatientViewModel ToViewModel(Patient patient)
         {
-            //var result = new PatientViewModel()
-            //{
-            //    ID = patient.ID,
-            //    FirstName = patient.FirstName,
-            //    LastName = patient.LastName,
-            //    DoctorFirstName = patient.PersonalDoctor.FirstName,
-            //    DoctorLastName = patient.PersonalDoctor.LastName,
-            //    PhoneNumber = patient.PhoneNumber,
-            //    Email = patient.Email
-            //};
-            //return result;
             PatientViewModel result;
             if(patient.PersonalDoctor != null)
             {

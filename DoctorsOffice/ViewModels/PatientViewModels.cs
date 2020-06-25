@@ -62,7 +62,6 @@ namespace DoctorsOffice.ViewModels
 
     public class PatientCreateViewModel: PatientEditViewModel
     {
-        /*public PatientEditViewModel Patient { get; set; }*/
         public string HeightMetricUnit { get; set; }
         public string WeightMetricunit { get; set; }
     }

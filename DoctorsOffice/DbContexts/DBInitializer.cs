@@ -131,8 +131,6 @@ namespace DoctorsOffice.DbContexts
                     DateOfVisit = DateTime.Parse("05-12-2018"),
                     PatientID = patients.Single(p => p.LastName == "Garcia").ID,
                     DoctorID = doctors.Single(d => d.LastName == "Goldstein").ID,
-                    //ExamPatient = patients.Single(p => p.LastName == "Garcia"),
-                    //ExamDoctor = doctors.Single(d => d.LastName == "Goldstein"),
                     DiagnoseCode = "nose reconstruction",
                     ExamResults = "Preoperation examination. All results ok."
                 },
@@ -179,9 +177,6 @@ namespace DoctorsOffice.DbContexts
             };
             examinations.ForEach(e => context.Examinations.Add(e));
             context.SaveChanges();
-
-
-           // base.Seed(context);
         }
    
     }

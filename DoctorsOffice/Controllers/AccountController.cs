@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using DoctorsOffice.Data;
 using DoctorsOffice.ViewModels;
 using DoctorsOffice.DbContexts;
+using System.Configuration;
 
 namespace DoctorsOffice.Controllers
 {
@@ -19,15 +20,17 @@ namespace DoctorsOffice.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationRoleManager _roleManager;
 
         public AccountController()
         {
         }
-
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+         
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, ApplicationRoleManager roleManager )
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            RoleManager = roleManager;
         }
 
         public ApplicationSignInManager SignInManager
@@ -46,7 +49,7 @@ namespace DoctorsOffice.Controllers
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _userManager ?? HttpContext.GetOwinContext().Get<ApplicationUserManager>();
             }
             private set
             {
@@ -54,13 +57,28 @@ namespace DoctorsOffice.Controllers
             }
         }
 
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
+            }
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
-        {
+         {
+            
+            Task.Run(async () => { await CreateAdminIfNeeded(); }).Wait();
+           
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return View(); 
         }
 
         //
@@ -82,35 +100,35 @@ namespace DoctorsOffice.Controllers
             {
                 var user = db.Users.Single(u => u.Email.Equals(model.Email));
             
-            if (user != null)
-            {
-                model.UserName = user.UserName;
-                if (!await UserManager.IsEmailConfirmedAsync(user.Id))
+                if (user != null)
                 {
-                    string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account - Resend");
-                        ViewBag.errorMessage = "You must have a confirmed email to log on. "
-                                  + "The confirmation token has been resent to your email account.";
-                        return View("Error");
+                    model.UserName = user.UserName;
+                    if (!await UserManager.IsEmailConfirmedAsync(user.Id))
+                    {
+                        string callbackUrl = await SendEmailConfirmationTokenAsync(user.Id, "Confirm your account - Resend");
+                            ViewBag.errorMessage = "You must have a confirmed email to log on. "
+                                      + "The confirmation token has been resent to your email account.";
+                            return View("Error");
+                    }
                 }
-            }
 
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, change to shouldLockout: true
+                    // This doesn't count login failures towards account lockout
+                    // To enable password failures to trigger account lockout, change to shouldLockout: true
                 
-            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
-            }
+                var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
+                switch (result)
+                {
+                    case SignInStatus.Success:
+                        return RedirectToLocal(returnUrl);
+                    case SignInStatus.LockedOut:
+                        return View("Lockout");
+                    case SignInStatus.RequiresVerification:
+                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                    case SignInStatus.Failure:
+                    default:
+                        ModelState.AddModelError("", "Invalid login attempt.");
+                        return View(model);
+                }
             }
         }
 
@@ -522,6 +540,28 @@ namespace DoctorsOffice.Controllers
                                             "Please confirm your account by clicking <a href=\""
                                             + callbackUrl + "\">here</a>");
             return callbackUrl;
+        }
+
+        private async Task CreateAdminIfNeeded()
+        {
+            string adminUserName = ConfigurationManager.AppSettings["AdminUserName"];
+            string adminPassword = ConfigurationManager.AppSettings["AdminPassword"];
+            var objAdminUser = UserManager.FindByEmail(adminUserName);
+
+            if (objAdminUser == null)
+            {
+                var objNewAdminUser = new ApplicationUser
+                                    { UserName = "Admin",
+                                      Email = adminUserName,
+                                      EmailConfirmed = true
+                                    };
+                var adminUserCreateResult = await UserManager.CreateAsync(objNewAdminUser, adminPassword);
+                if (adminUserCreateResult.Succeeded)
+                {
+                    UserManager.AddToRole(objNewAdminUser.Id, "Admin");
+                }
+
+            }
         }
         #endregion
     }

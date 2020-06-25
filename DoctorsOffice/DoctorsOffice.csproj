@@ -198,7 +198,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\AdministrationController.cs" />
     <Compile Include="Controllers\DoctorsController.cs" />
     <Compile Include="Controllers\ExaminationsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -211,7 +210,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\FileManipulation.cs" />
-    <Compile Include="Translators\AdministrationTranslator.cs" />
     <Compile Include="Translators\DoctorTranslator.cs" />
     <Compile Include="Translators\ExaminationTranslator.cs" />
     <Compile Include="Translators\PatientTranslator.cs" />
@@ -220,7 +218,6 @@
     <Compile Include="Data\Doctor.cs" />
     <Compile Include="Data\Examination.cs" />
     <Compile Include="Data\IdentityModels.cs" />
-    <Compile Include="ViewModels\AdministrationViewModel.cs" />
     <Compile Include="ViewModels\DoctorCreateViewModel.cs" />
     <Compile Include="ViewModels\DoctorDeleteViewModel.cs" />
     <Compile Include="ViewModels\DoctorEditViewModel.cs" />
@@ -274,10 +271,8 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="libman.json" />
+    <Content Include="PrivateSettings.config" />
     <None Include="Properties\PublishProfiles\DoctorsOffice20191212050314 - Web Deploy.pubxml" />
-    <Content Include="PrivateSettings.config">
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -360,7 +355,6 @@
     <Content Include="Views\Examinations\Edit.cshtml" />
     <Content Include="Views\Shared\Info.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Administration\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -326,7 +326,7 @@ namespace DoctorsOffice.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Doctor doctor = db.Doctors.Single(d => d.ID == id); ;
+            Doctor doctor = db.Doctors.Single(d => d.ID == id);
             File image = db.Files.Single(i => i.ID == doctor.ImageID);
             db.Doctors.Remove(doctor);
             db.Files.Remove(image);

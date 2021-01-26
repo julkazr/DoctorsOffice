@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoctorsOffice", "DoctorsOff
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoctorsOffice.Repositories", "DoctorsOffice.Repositories\DoctorsOffice.Repositories.csproj", "{31472417-6ABA-4510-A56E-8B7E36B53E08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DoctorsOffice.Domain", "DoctorsOffice.Domain\DoctorsOffice.Domain.csproj", "{097BA7F2-B643-4130-A00D-97C1F6573644}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{31472417-6ABA-4510-A56E-8B7E36B53E08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31472417-6ABA-4510-A56E-8B7E36B53E08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31472417-6ABA-4510-A56E-8B7E36B53E08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{097BA7F2-B643-4130-A00D-97C1F6573644}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{097BA7F2-B643-4130-A00D-97C1F6573644}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{097BA7F2-B643-4130-A00D-97C1F6573644}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{097BA7F2-B643-4130-A00D-97C1F6573644}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,4 +1,5 @@
 ﻿using DoctorsOffice.Data;
+using DoctorsOffice.Domain.Models;
 using DoctorsOffice.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -7,9 +8,9 @@ using System.Web;
 
 namespace DoctorsOffice.Translators
 {
-    public class DoctorTranslator
+    public class DoctorViewTranslator
     {
-        public DoctorBriefViewModel ToViewModel(Doctor doctor)
+        public DoctorBriefViewModel ToViewModel(DoctorDomainModel doctor)
         {
             var result = new DoctorBriefViewModel()
             {

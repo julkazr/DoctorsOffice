@@ -8,13 +8,17 @@ using System.Threading.Tasks;
 
 namespace DoctorsOffice.Repositories
 {
-    public class DoctorsRepository : IRepository<Doctor>
+    public interface IDoctorsRepository: IRepository<Doctor>
+    {
+
+    }
+    public class DoctorsRepository : IDoctorsRepository
     {
         private ApplicationDbContext _context;
 
         public DoctorsRepository(ApplicationDbContext context)
         {
-            _context = context;
+            this._context = context;
         }
 
         public Doctor Create(Doctor obj)

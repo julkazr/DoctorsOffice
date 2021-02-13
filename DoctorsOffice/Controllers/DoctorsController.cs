@@ -12,13 +12,24 @@ using DoctorsOffice.DbContexts;
 using DoctorsOffice.ViewModels;
 using DoctorsOffice.Translators;
 using DoctorsOffice.Helpers;
+using DoctorsOffice.Domain.Interfaces;
+using DoctorsOffice.Domain.Models;
+using DoctorsOffice.Domain.Services;
+
 
 namespace DoctorsOffice.Controllers
 {
     public class DoctorsController : Controller
     {
+       
         private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly IDoctorService _doctorService;
 
+        public DoctorsController(IDoctorService doctorService)
+        {
+            this._doctorService = doctorService;
+        }
+        //public DoctorsController() { }
         // GET: Doctors
         [Authorize]
         public ActionResult Index(string sort, string searchByName, string searchByPosition, int? page)
@@ -27,40 +38,44 @@ namespace DoctorsOffice.Controllers
             int pageNumber = (page ?? 1);
 
             DoctorListViewModel viewModel = new DoctorListViewModel();
+            var doctorTranslator = new DoctorViewTranslator();
+            viewModel.Doctors = _doctorService.GetAll(sort, searchByName, searchByPosition, page)
+                                              .Select(doctorTranslator.ToViewModel)
+                                              .ToPagedList(pageNumber, pageSize);
 
-            IQueryable<Doctor> doctorsQuery = db.Doctors;
+            //IQueryable<Doctor> doctorsQuery = db.Doctors;
 
-            if (!string.IsNullOrEmpty(searchByName))
-            {
-                doctorsQuery = doctorsQuery
-                    .Where(d => d.FirstName.Contains(searchByName) || d.LastName.Contains(searchByName));
-                
-            }
-            if (!string.IsNullOrEmpty(searchByPosition))
-            {
-                doctorsQuery = doctorsQuery.Where(d => d.Position.Contains(searchByPosition));
-              
-            }
+            //if (!string.IsNullOrEmpty(searchByName))
+            //{
+            //    doctorsQuery = doctorsQuery
+            //        .Where(d => d.FirstName.Contains(searchByName) || d.LastName.Contains(searchByName));
 
-            switch (sort)
-            {
-                case "name_desc":
-                    doctorsQuery = doctorsQuery.OrderByDescending(d => d.LastName).ThenByDescending(d => d.FirstName);
-                    break;
-                case "position":
-                    doctorsQuery = doctorsQuery.OrderBy(d => d.Position);
-                    break;
-                case "position_desc":
-                    doctorsQuery = doctorsQuery.OrderByDescending(d => d.Position);
-                    break;
-                default:
-                    doctorsQuery = doctorsQuery.OrderBy(d => d.LastName).ThenBy(d => d.FirstName);
-                    break;
-            }
-            var doctorTranslator = new DoctorTranslator();
-            viewModel.Doctors = doctorsQuery
-                    .Select(doctorTranslator.ToViewModel)
-                    .ToPagedList(pageNumber, pageSize);
+            //}
+            //if (!string.IsNullOrEmpty(searchByPosition))
+            //{
+            //    doctorsQuery = doctorsQuery.Where(d => d.Position.Contains(searchByPosition));
+
+            //}
+
+            //switch (sort)
+            //{
+            //    case "name_desc":
+            //        doctorsQuery = doctorsQuery.OrderByDescending(d => d.LastName).ThenByDescending(d => d.FirstName);
+            //        break;
+            //    case "position":
+            //        doctorsQuery = doctorsQuery.OrderBy(d => d.Position);
+            //        break;
+            //    case "position_desc":
+            //        doctorsQuery = doctorsQuery.OrderByDescending(d => d.Position);
+            //        break;
+            //    default:
+            //        doctorsQuery = doctorsQuery.OrderBy(d => d.LastName).ThenBy(d => d.FirstName);
+            //        break;
+            //}
+            //var doctorTranslator = new DoctorTranslator();
+            //viewModel.Doctors = doctorsQuery
+            //        .Select(doctorTranslator.ToViewModel)
+            //        .ToPagedList(pageNumber, pageSize);
 
             viewModel.CurrentSort = sort;
             viewModel.SortByName = string.IsNullOrEmpty(sort) ? "name_desc" : "";
@@ -85,7 +100,7 @@ namespace DoctorsOffice.Controllers
                 return HttpNotFound();
             }
             DoctorEditViewModel viewModel = new DoctorEditViewModel();
-            DoctorTranslator doctorTranslator = new DoctorTranslator();
+            DoctorViewTranslator doctorTranslator = new DoctorViewTranslator();
             viewModel.Doctor = doctorTranslator.ToDoctorViewModel(doctor);
 
             File image = db.Files.Single(i => i.ID == doctor.ImageID);
@@ -123,7 +138,7 @@ namespace DoctorsOffice.Controllers
                     ID = viewModel.Image.ID,
                     ContentType = viewModel.Image.ImgUpload.ContentType
                 };
-                DoctorTranslator doctorDataTranslator = new DoctorTranslator();
+                DoctorViewTranslator doctorDataTranslator = new DoctorViewTranslator();
                 Doctor doctor = doctorDataTranslator.ToDoctorDataModel(viewModel, image);
                 FileManipulation imageUploadHelper = new FileManipulation();
                 
@@ -173,7 +188,7 @@ namespace DoctorsOffice.Controllers
                 return HttpNotFound();
             }
             var doctorName = doctor.FirstName + " " + doctor.LastName;
-            DoctorTranslator editDoctorTranslator = new DoctorTranslator();
+            DoctorViewTranslator editDoctorTranslator = new DoctorViewTranslator();
             DoctorEditViewModel viewModel = new DoctorEditViewModel();
             viewModel.DoctorsName = doctorName;
             viewModel.Doctor = editDoctorTranslator.ToDoctorViewModel(doctor);
@@ -309,7 +324,7 @@ namespace DoctorsOffice.Controllers
             }
             Doctor doctor = db.Doctors.Single(d => d.ID == id);
             File image = db.Files.Single(i => i.ID == doctor.ImageID);
-            DoctorTranslator imageTranslator = new DoctorTranslator();
+            DoctorViewTranslator imageTranslator = new DoctorViewTranslator();
             viewModel.Image = imageTranslator.ToImageViewModel(image);
 
             viewModel.DoctorName = doctor.FirstName + " " + doctor.LastName;
